@@ -1,6 +1,6 @@
 # VM-Auftrag: Ein Computer im Computer
 
-**Für:** Schnupperlehrlinge, die den Linux-Auftrag gemacht haben  **Zeit:** ca. 3 Stunden
+**Für:** Schnupperlehrlinge, die den Linux-Auftrag gemacht haben  **Zeit:** ca. 2½ Stunden
 **Vorwissen:** Linux-Auftrag (Terminal, `cd`, `ls`, `cat`, `nano`, `>` und `>>`)
 
 In diesem Auftrag baust du dir deinen eigenen Server: Du lädst Debian Linux herunter, installierst
@@ -32,10 +32,10 @@ Du brauchst im Auftrag mehrmals deinen Vornamen in einer «Computer-Schreibweise
 **Kleinbuchstaben**, **keine Umlaute** und **keine Leerzeichen**. Aus ä wird ae, aus ö wird oe,
 aus ü wird ue.
 
-| Beispiel        | Benutzername | Name der VM  |
-|-----------------|--------------|--------------|
-| Anna Muster     | `anna`       | `vm-anna`    |
-| Jörg Beispiel   | `joerg`      | `vm-joerg`   |
+| Beispiel        | Benutzername | Name der VM    |
+|-----------------|--------------|----------------|
+| Anna Muster     | `anna`       | `vm-anna`      |
+| Jörg Beispiel   | `joerg`      | `vm-joerg`     |
 | Lea-Sophie Test | `leasophie`  | `vm-leasophie` |
 
 Schreib dir deinen Benutzernamen und den Namen deiner VM hier auf:
@@ -47,23 +47,20 @@ In allen Befehlen auf diesen Blättern steht als Beispiel `anna` und `vm-anna`.
 
 ### Übersicht
 
-| Nr. | Name der Aufgabe (= Dateiname)  | Thema                                | Zeit   |
-|-----|---------------------------------|--------------------------------------|--------|
-| 0   | –                               | Vorbereitung                         | 5 Min  |
-| 1   | `aufgabe1_virtualisierung`      | Was ist eine virtuelle Maschine?     | 15 Min |
-| 2   | `aufgabe2_gastgeber`            | Deinen Laptop kennenlernen           | 10 Min |
-| 3   | `aufgabe3_iso`                  | Debian herunterladen und prüfen      | 25 Min |
-| 4   | `aufgabe4_vm_erstellen`         | Die virtuelle Maschine erstellen     | 15 Min |
-| 5   | `aufgabe5_installation`         | Debian installieren                  | 40 Min |
-| 6   | `aufgabe6_erster_start`         | Der erste Start                      | 10 Min |
-| 7   | `aufgabe7_ssh`                  | Fernsteuerung mit SSH                | 20 Min |
-| 8   | `aufgabe8_webserver`            | Deine eigene Webseite                | 20 Min |
-| 9   | `aufgabe9_schnappschuss`        | Zurück in die Vergangenheit          | 15 Min |
-| 10  | `aufgabe10_rueckblick`          | Was hast du gelernt?                 | 10 Min |
-| ★   | `zusatz_hardware`               | Freiwillig: Mehr Arbeitsspeicher     |   –    |
-| ★   | `bonus_virsh`                   | Freiwillig: VMs mit Befehlen steuern |   –    |
+| Nr. | Name der Aufgabe (= Dateiname)  | Thema                                  | Zeit   |
+|-----|---------------------------------|----------------------------------------|--------|
+| 0   | –                               | Vorbereitung                           | 5 Min  |
+| 1   | `aufgabe1_virtualisierung`      | Was ist eine VM? Wie stark ist dein Laptop? | 20 Min |
+| 2   | `aufgabe2_iso`                  | Debian herunterladen und prüfen        | 20 Min |
+| 3   | `aufgabe3_vm_erstellen`         | Die virtuelle Maschine erstellen       | 15 Min |
+| 4   | `aufgabe4_installation`         | Debian installieren                    | 45 Min |
+| 5   | `aufgabe5_ssh`                  | Anmelden und fernsteuern mit SSH       | 25 Min |
+| 6   | `aufgabe6_webserver`            | Deine eigene Webseite                  | 20 Min |
+| 7   | `aufgabe7_rueckblick`           | Was hast du gelernt?                   | 10 Min |
+| ★   | `zusatz_schnappschuss`          | Freiwillig: Zurück in die Vergangenheit |   –    |
+| ★   | `bonus_virsh`                   | Freiwillig: VMs mit Befehlen steuern   |   –    |
 
-Die Aufgaben 0 bis 10 sind Pflicht. Die zwei Aufgaben mit ★ machst du nur, wenn du vorher fertig
+Die Aufgaben 0 bis 7 sind Pflicht. Die zwei Aufgaben mit ★ machst du nur, wenn du vorher fertig
 bist. Die Aufgaben bauen aufeinander auf: Mach sie **der Reihe nach**.
 
 ---
@@ -72,17 +69,17 @@ bist. Die Aufgaben bauen aufeinander auf: Mach sie **der Reihe nach**.
 
 ### Wiederholung aus dem Linux-Auftrag
 
-| Was                     | Wie                                                              |
-|-------------------------|------------------------------------------------------------------|
-| Terminal öffnen         | Menü bzw. Suche → **Terminal**                                   |
-| Datei bearbeiten        | `nano ~/VM-Ergebnisse/dateiname.txt`                             |
-| In nano speichern       | `Ctrl` + `O`, danach Enter                                       |
-| nano verlassen          | `Ctrl` + `X`                                                     |
+| Was                        | Wie                                                           |
+|----------------------------|---------------------------------------------------------------|
+| Terminal öffnen            | Menü bzw. Suche → **Terminal**                                |
+| Datei bearbeiten           | `nano ~/VM-Ergebnisse/dateiname.txt`                          |
+| In nano speichern          | `Ctrl` + `O`, danach Enter                                    |
+| nano verlassen             | `Ctrl` + `X`                                                  |
 | Ergebnis in Datei, **neu** | `befehl > datei` (löscht, was vorher in der Datei war)        |
-| Ergebnis **anhängen**   | `befehl >> datei` (was vorher drin war, bleibt erhalten)         |
-| Letzten Befehl holen    | Pfeiltaste `↑`                                                   |
-| Namen ergänzen          | Tabulator-Taste `⇥`                                              |
-| Einfügen im Terminal    | `Ctrl` + `Shift` + `V`                                           |
+| Ergebnis **anhängen**      | `befehl >> datei` (was vorher drin war, bleibt erhalten)      |
+| Letzten Befehl holen       | Pfeiltaste `↑`                                                |
+| Namen ergänzen             | Tabulator-Taste `⇥`                                           |
+| Einfügen im Terminal       | `Ctrl` + `Shift` + `V`                                        |
 
 | Zeichen | Auf der Schweizer Tastatur                                        |
 |---------|-------------------------------------------------------------------|
@@ -90,8 +87,6 @@ bist. Die Aufgaben bauen aufeinander auf: Mach sie **der Reihe nach**.
 | `@`     | `AltGr` + `2`                                                     |
 | `\|`    | `AltGr` + `7`                                                     |
 | `<` `>` | Taste links neben `Y`, für `>` zusätzlich `Shift`                 |
-
-### Dein Ergebnis-Ordner
 
 Kontrolliere, ob der Ordner für deine Ergebnisse da ist:
 
@@ -106,8 +101,6 @@ sonst nichts. Wenn eine Fehlermeldung kommt: Betreuungsperson fragen.
 
 ## Aufgabe 1 – `aufgabe1_virtualisierung`
 
-**Lies zuerst den Text. Beantworte danach die Fragen.**
-
 ### Lesetext: Ein Computer im Computer
 
 Eine **virtuelle Maschine** (kurz **VM**) ist ein Computer, der nicht aus echten Teilen besteht,
@@ -117,210 +110,133 @@ nur **vorgetäuscht**: In Wirklichkeit leiht sich die VM ein Stück vom echten C
 Festplatte ist zum Beispiel nur eine grosse **Datei** auf der Festplatte des echten Computers.
 
 Den echten Computer nennt man **Host** (englisch für Gastgeber). Die VM nennt man **Gast**. Auf
-einem Host können gleichzeitig **mehrere** Gäste laufen. Jeder Gast hat sein eigenes
-Betriebssystem. So kann auf einem Laptop mit Linux eine VM mit Windows laufen und daneben eine
-zweite VM mit einem anderen Linux.
+einem Host können gleichzeitig **mehrere** Gäste laufen, jeder mit seinem eigenen Betriebssystem.
 
-Damit das funktioniert, braucht es einen **Hypervisor**. Das ist die Software, die die Teile des
-Hosts an die Gäste verteilt und aufpasst, dass sich die Gäste nicht gegenseitig stören. Man kann
-es mit einem **Mehrfamilienhaus** vergleichen: Das **Haus** ist der Host. Die **Wohnungen** sind
-die VMs. Jede Wohnung hat eigene Zimmer und eine eigene Türe, und was in einer Wohnung passiert,
-merken die Nachbarn nicht. Die **Hausverwaltung** ist der Hypervisor: Sie entscheidet, wie gross
-jede Wohnung ist. Mehr Platz, als das Haus hat, kann sie aber nicht verteilen.
+Damit das funktioniert, braucht es einen **Hypervisor**. Er verteilt die Teile des Hosts an die
+Gäste und passt auf, dass sie sich nicht gegenseitig stören. Man kann es mit einem
+**Mehrfamilienhaus** vergleichen: Das Haus ist der Host, die Wohnungen sind die VMs, und die
+Hausverwaltung ist der Hypervisor. Sie entscheidet, wie gross jede Wohnung ist. Mehr Platz, als
+das Haus hat, kann sie aber nicht verteilen.
 
-Unter Linux heisst der Hypervisor **KVM**. Er ist direkt im **Kern von Linux** eingebaut. Dazu
-kommen weitere Programme: **QEMU** spielt die Geräte der VM vor (z. B. Festplatte und
-Netzwerkkarte), und mit dem Programm **Virtual Machine Manager** (auf Deutsch «Virtuelle
-Maschinenverwaltung») kannst du die VMs mit der Maus erstellen und steuern.
+Unter Linux heisst der Hypervisor **KVM**. Er ist direkt im **Kern von Linux** eingebaut. Mit dem
+Programm **Virtual Machine Manager** (auf Deutsch «Virtuelle Maschinenverwaltung») kannst du die
+VMs mit der Maus erstellen und steuern.
 
-Warum benutzt man VMs? Ein Grund ist **Sicherheit beim Ausprobieren**: Wenn in einer VM etwas
-kaputtgeht, ist nur die VM kaputt, der Host läuft normal weiter. Ein zweiter Grund ist **Geld und
-Platz**: Statt zehn Server zu kaufen, lässt eine Firma zehn VMs auf einem einzigen starken Server
-laufen. Fast alle Angebote aus der **Cloud** (z. B. Webseiten, Online-Speicher) laufen in VMs.
-Ein dritter Grund sind **Schnappschüsse**: Man kann den Zustand einer VM speichern und später
-dorthin zurückkehren. Das lernst du in Aufgabe 9 kennen.
+Warum benutzt man VMs? Wenn in einer VM etwas kaputtgeht, ist **nur die VM** kaputt, der Host
+läuft normal weiter. Ausserdem kann eine Firma auf **einem** starken Server viele VMs laufen
+lassen, statt viele Server zu kaufen. Fast alles aus der **Cloud** läuft in VMs.
 
-### Fragen
+### Wie stark ist dein Laptop?
 
-Öffne die Datei mit:
-
-```
-nano ~/VM-Ergebnisse/aufgabe1_virtualisierung.txt
-```
-
-Schreibe in die erste Zeile deinen Vor- und Nachnamen. Schreibe vor jede Antwort die Nummer der
-Frage (z. B. `1)`).
-
-1. Erkläre **in deinen eigenen Worten** (nicht abschreiben!), was eine virtuelle Maschine ist.
-   Schreibe 1–2 Sätze.
-2. In diesem Auftrag: Was ist der **Host** und was ist der **Gast**?
-3. Richtig oder falsch? Schreibe **R** oder **F** und begründe jede Antwort mit einem Satz.
-   - a) Wenn der Host 8 GB Arbeitsspeicher hat, kann man einer VM 16 GB geben.
-   - b) Wenn ich in der VM aus Versehen alle Dateien lösche, sind auch die Dateien auf dem Host weg.
-   - c) KVM ist ein Teil des Linux-Kerns.
-4. Im Text wird ein Vergleich mit einem Mehrfamilienhaus gemacht. Was ist dabei das **Haus**,
-   was sind die **Wohnungen** und was ist die **Hausverwaltung**?
-5. Wie heisst der **Hypervisor** unter Linux, und wie heisst das **Programm**, mit dem du heute
-   die VM mit der Maus erstellst? Antworte mit genau **zwei Namen**.
-6. Nenne **drei Gründe** aus dem Text, warum man VMs benutzt.
-
-Speichern (`Ctrl` + `O`, Enter) und nano verlassen (`Ctrl` + `X`).
-
----
-
-## Aufgabe 2 – `aufgabe2_gastgeber`
-
-### Lesetext: Wie stark ist dein Laptop?
-
-Bevor du eine VM baust, musst du wissen, wie viel dein Host überhaupt hergeben kann. Drei Dinge
-sind wichtig:
-
-- **Prozessor (CPU):** Er rechnet. Moderne Prozessoren haben mehrere **Kerne**, die gleichzeitig
-  arbeiten können.
-- **Arbeitsspeicher (RAM):** Hier liegen die Programme, die gerade laufen. Was die VM an RAM
-  bekommt, fehlt dem Host, solange die VM läuft.
-- **Festplatte:** Hier wird die Festplatten-Datei der VM gespeichert. Die VMs liegen im Ordner
-  `/var/lib/libvirt/images`.
-
-Ausserdem muss der Prozessor **Virtualisierung** unterstützen, sonst ist die VM sehr langsam.
-Prozessoren von Intel nennen das **vmx**, Prozessoren von AMD nennen es **svm**.
+Was die VM bekommt, fehlt dem Host, solange die VM läuft. Darum musst du wissen, wie viel dein
+Laptop hergeben kann. Ausserdem muss der Prozessor **Virtualisierung** unterstützen, sonst ist
+die VM sehr langsam. Intel nennt das **vmx**, AMD nennt es **svm**.
 
 | Befehl                                  | Was er zeigt                                                   |
 |-----------------------------------------|----------------------------------------------------------------|
 | `nproc`                                 | die Anzahl **Prozessor-Kerne**                                 |
-| `free -h`                               | den **Arbeitsspeicher**. Wichtig ist die Zeile `Speicher:` (bzw. `Mem:`) und die Spalte `gesamt` (bzw. `total`). |
-| `df -h /var/lib/libvirt/images`         | wie viel Platz auf der Festplatte dort noch **frei** ist (Spalte `Verf.` bzw. `Avail`). |
+| `free -h`                               | den **Arbeitsspeicher** (RAM). Wichtig ist die Zeile `Speicher:` (bzw. `Mem:`) und die Spalte `gesamt` (bzw. `total`). |
 | `grep -c -E 'vmx\|svm' /proc/cpuinfo`   | zählt, wie oft `vmx` oder `svm` in der Beschreibung des Prozessors vorkommt. Eine Zahl **grösser als 0** heisst: Der Prozessor kann Virtualisierung. |
 
-Das `-h` bei `free` und `df` heisst «human» (= für Menschen lesbar). Statt riesigen Zahlen in Byte
-siehst du dann z. B. `15Gi`. `Gi` steht für Gibibyte, das ist fast das Gleiche wie Gigabyte (GB).
+Das `-h` bei `free` heisst «human» (= für Menschen lesbar). Statt riesigen Zahlen siehst du
+dann z. B. `15Gi`. `Gi` steht für Gibibyte, das ist fast das Gleiche wie Gigabyte (GB).
 
 ### Aufträge
 
-1. Probiere die vier Befehle aus dem Kasten im Terminal aus und schau dir die Ergebnisse an.
-2. Schreibe deinen Namen in die Ergebnisdatei (Ersetze *Vorname Nachname* durch **deinen** Namen):
+1. Schreibe deinen Namen in die Ergebnisdatei (Ersetze *Vorname Nachname* durch **deinen** Namen):
    ```
-   echo "Vorname Nachname" > ~/VM-Ergebnisse/aufgabe2_gastgeber.txt
+   echo "Vorname Nachname" > ~/VM-Ergebnisse/aufgabe1_virtualisierung.txt
    ```
-3. Hänge nacheinander die Ergebnisse aller **vier** Befehle an diese Datei an.
-4. Öffne die Datei mit nano. Kontrolliere, ob dein Name noch in der ersten Zeile steht.
-   Beantworte unten diese Fragen:
-   - a) Wie viele Prozessor-Kerne hat dein Laptop?
-   - b) Wie viel Arbeitsspeicher hat dein Laptop **insgesamt**?
-   - c) Wie viel Platz ist im Ordner `/var/lib/libvirt/images` noch frei?
-   - d) Kann der Prozessor deines Laptops Virtualisierung? Woran erkennst du das?
-   - e) Deine VM bekommt gleich **2 Kerne**, **2 GiB Arbeitsspeicher** und eine **20 GiB**
-        grosse Festplatte. Wie viel Arbeitsspeicher bleibt dem Host noch, solange die VM läuft?
-        Reicht der freie Platz auf der Festplatte für die VM?
+2. Hänge nacheinander die Ergebnisse der **drei** Befehle aus dem Kasten an diese Datei an.
+3. Öffne die Datei mit nano. Kontrolliere, ob dein Name noch in der ersten Zeile steht.
+   Beantworte unten diese Fragen. Schreibe vor jede Antwort die Nummer (z. B. `1)`).
+   1. Erkläre **in deinen eigenen Worten** (nicht abschreiben!), was eine virtuelle Maschine ist.
+   2. In diesem Auftrag: Was ist der **Host** und was ist der **Gast**?
+   3. Richtig oder falsch? Schreibe **R** oder **F** und begründe mit einem Satz.
+      - a) Wenn der Host 8 GB Arbeitsspeicher hat, kann man einer VM 16 GB geben.
+      - b) Wenn ich in der VM aus Versehen alle Dateien lösche, sind auch die Dateien auf dem
+           Host weg.
+   4. Wie heisst der **Hypervisor** unter Linux, und wie heisst das **Programm**, mit dem du heute
+      die VM erstellst? Antworte mit genau **zwei Namen**.
+   5. Wie viele Kerne und wie viel Arbeitsspeicher **insgesamt** hat dein Laptop?
+   6. Kann der Prozessor deines Laptops Virtualisierung? Woran erkennst du das?
+   7. Deine VM bekommt **2 GiB** Arbeitsspeicher. Wie viel bleibt dem Laptop noch, solange die
+      VM läuft?
 
 ---
 
-## Aufgabe 3 – `aufgabe3_iso`
+## Aufgabe 2 – `aufgabe2_iso`
 
 ### Lesetext: ISO-Dateien und Prüfsummen
 
-Früher hat man ein Betriebssystem von einer **CD** oder **DVD** installiert. Heute lädt man
-stattdessen eine **ISO-Datei** herunter. Eine ISO-Datei ist eine genaue Kopie einer CD in einer
-einzigen Datei. Die VM kann diese Datei benutzen, als wäre eine echte CD eingelegt.
+Früher hat man ein Betriebssystem von einer **CD** installiert. Heute lädt man stattdessen eine
+**ISO-Datei** herunter. Das ist eine genaue Kopie einer CD in einer einzigen Datei. Die VM kann
+sie benutzen, als wäre eine echte CD eingelegt. Wir nehmen die kleinste ISO-Datei von Debian:
+**netinst**. Sie enthält nur das Nötigste, alles andere wird während der Installation aus dem
+Internet geladen.
 
-Debian bietet verschiedene ISO-Dateien an. Wir benutzen die kleinste: **netinst** (= «network
-install», Installation übers Netzwerk). Sie enthält nur das Nötigste. Alles andere lädt das
-Installationsprogramm während der Installation aus dem Internet. Die VM braucht deshalb beim
-Installieren eine **Internetverbindung**.
-
-Beim Herunterladen kann etwas schiefgehen: Die Verbindung bricht ab und die Datei ist
-unvollständig. Oder jemand Böses hat die Datei unterwegs verändert und ein Schadprogramm eingebaut.
-Deshalb veröffentlicht Debian zu jeder ISO-Datei eine **Prüfsumme**. Eine Prüfsumme ist wie ein
-**Fingerabdruck** einer Datei: eine lange Zeichenkette, die aus dem ganzen Inhalt der Datei
-berechnet wird. Ändert sich in der Datei auch nur **ein einziges Zeichen**, kommt ein **komplett
-anderer** Fingerabdruck heraus. Wir benutzen das Verfahren **SHA-256**.
+Beim Herunterladen kann etwas schiefgehen: Die Datei ist unvollständig, oder jemand Böses hat sie
+unterwegs verändert und ein Schadprogramm eingebaut. Deshalb veröffentlicht Debian zu jeder
+ISO-Datei eine **Prüfsumme**. Eine Prüfsumme ist wie ein **Fingerabdruck** einer Datei: eine
+lange Zeichenkette, die aus dem ganzen Inhalt berechnet wird. Ändert sich in der Datei auch nur
+**ein einziges Zeichen**, kommt ein **komplett anderer** Fingerabdruck heraus. Wir benutzen das
+Verfahren **SHA-256**.
 
 | Befehl                         | Was er macht                                                          |
 |--------------------------------|-----------------------------------------------------------------------|
 | `sha256sum datei`              | berechnet die Prüfsumme der Datei.                                    |
-| `sha256sum -c SHA256SUMS`      | liest die Liste `SHA256SUMS` mit den richtigen Prüfsummen, berechnet die Prüfsumme jeder Datei aus der Liste und vergleicht («c» für «check» = prüfen). Stimmt sie, steht `OK` hinter dem Dateinamen. Stimmt sie **nicht**, steht dort `FEHLSCHLAG` (bzw. `FAILED`). |
+| `sha256sum -c SHA256SUMS`      | liest die Liste `SHA256SUMS` mit den richtigen Prüfsummen und vergleicht sie mit den Dateien («c» für «check» = prüfen). Stimmt sie, steht `OK` hinter dem Dateinamen, sonst `FEHLSCHLAG` (bzw. `FAILED`). |
 | `ls -lh datei`                 | zeigt Informationen über die Datei an, unter anderem ihre **Grösse**. |
 
 ### Aufträge
 
-**Teil A: Herunterladen starten.** Der Download dauert einige Minuten. Starte ihn deshalb zuerst
-und mach während des Wartens Teil B.
-
-1. Öffne den **Firefox** und tippe diese Adresse ein (genau abschreiben):
+1. **Download starten** (dauert einige Minuten): Öffne den **Firefox** und tippe diese Adresse
+   ein (genau abschreiben):
    ```
    cdimage.debian.org/debian-cd/current/amd64/iso-cd/
    ```
-2. Weiter unten auf der Seite siehst du eine Liste mit Dateien. Darin gibt es **drei**
-   ISO-Dateien, deren Namen auf `-amd64-netinst.iso` enden. Wir brauchen die Datei, bei der
-   direkt nach `debian-` eine **Zahl** kommt (die Versionsnummer), also **nicht** `debian-edu-…`
-   und **nicht** `debian-mac-…`. Klicke darauf, um sie herunterzuladen. Firefox speichert sie im
-   Ordner `Downloads`.
-
-**Teil B: Prüfsummen üben.** In deinem persönlichen Ordner gibt es den Ordner
-`vm-auftrag/pruefsummen`. Darin liegen drei kleine Übungsdateien und eine Liste mit ihren
-richtigen Prüfsummen. Eine der drei Dateien wurde unterwegs beschädigt.
-
-3. Schreibe deinen Namen in die Datei `~/VM-Ergebnisse/aufgabe3_iso.txt` (wie in Aufgabe 2).
-4. Wechsle in den Ordner `~/vm-auftrag/pruefsummen` und schau dir die Datei `SHA256SUMS` mit
-   `cat` an.
-5. Berechne mit `sha256sum` die Prüfsumme von `paket1.iso` und vergleiche sie von Auge mit der
-   Liste. (Es reicht, die ersten und letzten paar Zeichen zu vergleichen.)
-6. Das Vergleichen von Auge ist mühsam. Lass jetzt den Computer alle drei Dateien prüfen und hänge
-   das Ergebnis an deine Ergebnisdatei an:
-   ```
-   sha256sum -c SHA256SUMS >> ~/VM-Ergebnisse/aufgabe3_iso.txt
-   ```
-   Die Warnung, die dabei im Terminal erscheint, gehört so. Sie landet nicht in der Datei.
-7. Teste, wie stark sich die Prüfsumme bei einer kleinen Änderung verändert. Tippe diese zwei
-   Befehle (einmal mit grossem **H**, einmal mit kleinem **h**) und vergleiche die Ergebnisse:
+   Weiter unten gibt es **drei** ISO-Dateien, deren Namen auf `-amd64-netinst.iso` enden. Wir
+   brauchen die, bei der direkt nach `debian-` eine **Zahl** kommt, also **nicht** `debian-edu-…`
+   und **nicht** `debian-mac-…`. Klicke darauf. Firefox speichert sie im Ordner `Downloads`.
+2. **Während des Wartens:** Schreibe deinen Namen in die Datei `~/VM-Ergebnisse/aufgabe2_iso.txt`.
+   Tippe dann diese zwei Befehle (einmal grosses **H**, einmal kleines **h**) und vergleiche:
    ```
    echo Hallo | sha256sum
    echo hallo | sha256sum
    ```
-
-**Teil C: Die echte ISO-Datei prüfen.** Warte, bis der Download im Firefox fertig ist.
-
-8. Wechsle in den Ordner `~/Downloads` und lade dort die Liste mit den richtigen Prüfsummen von
-   Debian herunter. `wget` lädt die Datei, deren Adresse du angibst, in den aktuellen Ordner:
+3. Wenn der Download fertig ist: Wechsle in den Ordner `~/Downloads` und lade dort die Liste mit
+   den richtigen Prüfsummen herunter. `wget` lädt die Datei, deren Adresse du angibst:
    ```
    wget https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/SHA256SUMS
    ```
-9. Hänge Informationen über die ISO-Datei an deine Ergebnisdatei an. Der Stern `*` steht für
-   «beliebige Zeichen», so musst du die Versionsnummer nicht abtippen:
+4. Hänge Informationen über die ISO-Datei an. Der Stern `*` steht für «beliebige Zeichen», so
+   musst du die Versionsnummer nicht abtippen:
    ```
-   ls -lh debian-*-amd64-netinst.iso >> ~/VM-Ergebnisse/aufgabe3_iso.txt
+   ls -lh debian-*-amd64-netinst.iso >> ~/VM-Ergebnisse/aufgabe2_iso.txt
    ```
-10. Prüfe jetzt die ISO-Datei und hänge das Ergebnis an. Die Liste von Debian enthält die
-    Prüfsummen aller **drei** ISO-Dateien, du hast aber nur **eine** heruntergeladen. Mit
-    `--ignore-missing` («fehlende ignorieren») meckert `sha256sum` nicht über die zwei Dateien,
-    die du nicht hast:
-    ```
-    sha256sum -c --ignore-missing SHA256SUMS >> ~/VM-Ergebnisse/aufgabe3_iso.txt
-    ```
-    Das Berechnen dauert ein paar Sekunden. Kontrolliere mit `cat`, ob hinter dem Namen der
-    ISO-Datei `OK` steht. Wenn nicht: Betreuungsperson fragen.
-11. Öffne die Ergebnisdatei mit nano und beantworte unten:
-    - a) Welche der drei Übungsdateien war beschädigt?
-    - b) Was ist dir bei `Hallo` und `hallo` in Auftrag 7 aufgefallen? Was sagt dir das über
-         Prüfsummen?
-    - c) Wie gross ist die ISO-Datei?
-    - d) Warum braucht die VM eine Internetverbindung, wenn wir sie mit der netinst-ISO
-         installieren?
-    - e) Was hättest du gemacht, wenn bei der ISO-Datei `FEHLSCHLAG` gestanden hätte? Warum?
+5. Prüfe die ISO-Datei und hänge das Ergebnis an. Die Liste enthält die Prüfsummen aller **drei**
+   ISO-Dateien, du hast aber nur **eine**. Mit `--ignore-missing` («fehlende ignorieren») meckert
+   `sha256sum` nicht über die zwei anderen:
+   ```
+   sha256sum -c --ignore-missing SHA256SUMS >> ~/VM-Ergebnisse/aufgabe2_iso.txt
+   ```
+   Kontrolliere mit `cat`, ob hinter dem Namen der ISO-Datei `OK` steht. Wenn nicht:
+   Betreuungsperson fragen.
+6. Öffne die Ergebnisdatei mit nano und beantworte unten:
+   - a) Was ist dir bei `Hallo` und `hallo` aufgefallen? Was sagt dir das über Prüfsummen?
+   - b) Wie gross ist die ISO-Datei?
+   - c) Was hättest du gemacht, wenn `FEHLSCHLAG` gestanden hätte? Warum?
 
 ---
 
-## Aufgabe 4 – `aufgabe4_vm_erstellen`
+## Aufgabe 3 – `aufgabe3_vm_erstellen`
 
 ### Lesetext: Die VM einrichten
 
-Jetzt baust du die VM. Dafür benutzt du den **Virtual Machine Manager**. Du stellst ein, wie viel
-von deinem Laptop die VM bekommt. Dein Laptop teilt sich dabei ein Netzwerk mit der VM: Die VM
-bekommt eine eigene Adresse in einem **privaten Netzwerk**, das nur auf deinem Laptop existiert.
-Ins Internet kommt sie über deinen Laptop, so wie dein Handy zu Hause über den WLAN-Router ins
-Internet kommt. Diese Art von Netzwerk heisst **NAT**.
-
-Diese Einstellungen brauchst du:
+Jetzt baust du die VM mit dem **Virtual Machine Manager**. Die VM bekommt eine eigene Adresse in
+einem **privaten Netzwerk**, das nur auf deinem Laptop existiert. Ins Internet kommt sie über
+deinen Laptop, so wie dein Handy zu Hause über den WLAN-Router. Diese Art von Netzwerk heisst
+**NAT**.
 
 | Einstellung        | Wert                                                     |
 |--------------------|----------------------------------------------------------|
@@ -336,427 +252,296 @@ Diese Einstellungen brauchst du:
 ### Aufträge
 
 1. Starte über das Menü bzw. die Suche das Programm **Virtuelle Maschinenverwaltung** (bzw.
-   «Virtual Machine Manager»). Im Fenster siehst du die Zeile **QEMU/KVM**. Das ist die
-   Verbindung zum Hypervisor auf deinem Laptop.
+   «Virtual Machine Manager»). Im Fenster siehst du die Zeile **QEMU/KVM**.
 2. Klicke oben links auf das erste Symbol (Bildschirm mit einem Stern, «Neue virtuelle Maschine
    erstellen»). Ein Assistent führt dich in **5 Schritten** durch die Einrichtung:
    - **Schritt 1 von 5:** Wähle **Lokales Installationsmedium (ISO-Abbild oder CDROM)**.
      Klicke auf **Weiter**.
-   - **Schritt 2 von 5:** Klicke auf **Durchsuchen …**. Es öffnet sich ein neues Fenster. Klicke
-     darin **unten** auf **Browse Local**, gehe in den Ordner `Downloads`, wähle die ISO-Datei
-     und klicke auf **Öffnen**. Das Häkchen bei **Automatische Erkennung …** bleibt gesetzt.
-     Darunter muss **Debian 13** stehen. Klicke auf **Weiter**.
+   - **Schritt 2 von 5:** Klicke auf **Durchsuchen …**. Klicke im neuen Fenster **unten** auf
+     **Browse Local**, gehe in den Ordner `Downloads`, wähle die ISO-Datei und klicke auf
+     **Öffnen**. Darunter muss **Debian 13** stehen. Klicke auf **Weiter**.
      Wenn eine Meldung kommt, dass der Emulator **keine Suchberechtigungen** für den Pfad hat:
-     Klicke auf **Ja**. (Der Hypervisor darf sonst die ISO-Datei in deinem persönlichen Ordner
-     nicht lesen.)
-   - **Schritt 3 von 5:** Trage bei **Speicher** und **CPUs** die Werte aus der Tabelle ein.
-     Klicke auf **Weiter**.
-   - **Schritt 4 von 5:** Lass die Häkchen gesetzt und trage die Grösse der Festplatte aus der
-     Tabelle ein. Klicke auf **Weiter**.
+     Klicke auf **Ja**.
+   - **Schritt 3 von 5:** Trage **Speicher** und **CPUs** aus der Tabelle ein. **Weiter**.
+   - **Schritt 4 von 5:** Trage die Grösse der Festplatte aus der Tabelle ein. **Weiter**.
    - **Schritt 5 von 5:** Lösche den vorgeschlagenen Namen und trage **deinen** VM-Namen ein.
-     Klicke auf **Netzwerk Auswahl** und kontrolliere, ob dort das NAT-Netzwerk aus der Tabelle steht. Das
-     Häkchen bei **Konfiguration bearbeiten vor der Installation** setzt du **nicht**.
      Kontrolliere alle Angaben noch einmal mit der Tabelle und klicke dann auf **Fertig**.
-3. Ein neues Fenster öffnet sich. Das ist der **Bildschirm deiner VM**. Sie startet von der
-   ISO-Datei, und du siehst das Startmenü von Debian. **Klicke noch nichts an!** Mach zuerst die
-   Aufträge 4 bis 6.
-4. Schreibe deinen Namen in die Datei `~/VM-Ergebnisse/aufgabe4_vm_erstellen.txt`.
-5. Mit dem Befehl `virsh` kannst du VMs auch im Terminal anschauen. Hänge die Informationen über
-   deine VM an deine Ergebnisdatei an (mit **deinem** VM-Namen am Schluss):
+3. Ein neues Fenster öffnet sich: der **Bildschirm deiner VM** mit dem Startmenü von Debian.
+   **Klicke noch nichts an!** Mach zuerst die Aufträge 4 und 5.
+4. Schreibe deinen Namen in die Datei `~/VM-Ergebnisse/aufgabe3_vm_erstellen.txt` und hänge die
+   Informationen über deine VM an (mit **deinem** VM-Namen am Schluss):
    ```
-   virsh -c qemu:///system dominfo vm-anna >> ~/VM-Ergebnisse/aufgabe4_vm_erstellen.txt
+   virsh -c qemu:///system dominfo vm-anna >> ~/VM-Ergebnisse/aufgabe3_vm_erstellen.txt
    ```
-   `qemu:///system` sagt `virsh`, dass es sich mit dem Hypervisor auf deinem Laptop verbinden soll.
-   `dominfo` heisst «domain info». **Domain** ist bei `virsh` ein anderes Wort für VM.
-   Wenn eine Fehlermeldung kommt: Schau genau, ob du den Namen richtig geschrieben hast.
-6. Öffne die Datei mit nano und beantworte unten:
+   `virsh` ist das Terminal-Werkzeug für VMs. **Domain** ist bei `virsh` ein anderes Wort für VM.
+   Bei einer Fehlermeldung: Schau genau, ob du den Namen richtig geschrieben hast.
+5. Öffne die Datei mit nano und beantworte unten:
    - a) Wie viele CPUs hat deine VM laut `dominfo`?
    - b) Bei `Max Speicher` (bzw. `Max memory`) steht der Arbeitsspeicher in **KiB**. Rechne ihn
         in MiB um (1 MiB = 1024 KiB). Stimmt er mit der Tabelle überein?
-   - c) Was steht bei `Status` (bzw. `State`)?
-   - d) Die VM startet von der ISO-Datei und nicht von ihrer Festplatte. Warum?
+   - c) Die VM startet von der ISO-Datei und nicht von ihrer Festplatte. Warum?
 
 ---
 
-## Aufgabe 5 – `aufgabe5_installation`
+## Aufgabe 4 – `aufgabe4_installation`
 
 ### Lesetext: Was bei der Installation passiert
 
-Das Installationsprogramm von Debian stellt dir viele Fragen. Ein paar Begriffe musst du dafür
-kennen:
-
-**Rechnername:** Jeder Computer in einem Netzwerk hat einen Namen, damit man ihn erkennt. Deine
-VM bekommt den gleichen Namen wie in Aufgabe 4, also z. B. `vm-anna`.
-
 **root und sudo:** Unter Linux gibt es einen besonderen Benutzer mit dem Namen **root**. root ist
-der **Administrator** und darf alles, auch das ganze System kaputtmachen. Darum arbeitet man nicht
-als root, sondern als normaler Benutzer. Wenn man etwas Wichtiges ändern muss, z. B. ein Programm
-installieren, setzt man **`sudo`** vor den Befehl. Dann wird nur **dieser eine Befehl** mit den
-Rechten des Administrators ausgeführt, und Linux fragt vorher nach **deinem** Passwort.
-Im Installationsprogramm gilt: Wenn du für root **kein** Passwort eingibst, ist root gesperrt und
-**dein** Benutzer darf stattdessen `sudo` benutzen. Genau das wollen wir.
+der **Administrator** und darf alles, auch das ganze System kaputtmachen. Darum arbeitet man als
+normaler Benutzer und setzt nur bei wichtigen Befehlen **`sudo`** davor. Dann wird nur **dieser
+eine Befehl** mit Administratorrechten ausgeführt, und Linux fragt vorher nach **deinem**
+Passwort. Im Installationsprogramm gilt: Wenn du für root **kein** Passwort eingibst, ist root
+gesperrt und **dein** Benutzer darf stattdessen `sudo` benutzen. Genau das wollen wir.
 
-**Partitionieren:** Bevor ein Betriebssystem auf eine Festplatte kommt, muss die Festplatte
-eingeteilt werden, so wie man einen leeren Schrank mit Fächern einteilt. Diese Fächer heissen
-**Partitionen**. Dabei wird **alles gelöscht**, was vorher auf der Festplatte war. Achtung: Das
-Installationsprogramm sieht nur die Festplatte, die es vor sich hat. Bei einer Installation auf
-einem echten Computer wäre das die echte Festplatte mit allen Fotos und Dokumenten.
+**Partitionieren:** Bevor ein Betriebssystem auf eine Festplatte kommt, wird die Festplatte
+eingeteilt, so wie man einen leeren Schrank mit Fächern einteilt. Dabei wird **alles gelöscht**,
+was vorher auf der Festplatte war. Das Installationsprogramm sieht aber nur die Festplatte, die es
+vor sich hat. Bei einem echten Computer wäre das die echte Festplatte mit allen Fotos.
 
-**Server ohne Desktop:** Debian bietet an, eine **Desktop-Umgebung** zu installieren, also
-Fenster, Maus und Menüs. Wir installieren unsere VM wie einen echten **Server** **ohne**
-Desktop-Umgebung. Ein Server steht meistens in einem Rechenzentrum, und niemand sitzt davor.
-Man steuert ihn aus der Ferne, mit Text-Befehlen. Ohne Desktop braucht die VM ausserdem
-**viel weniger Arbeitsspeicher und Festplatte**, und die Installation geht schneller. Stattdessen
-installieren wir einen **SSH-Server**. Damit kannst du die VM in Aufgabe 7 von deinem Laptop aus
-fernsteuern.
+**Server ohne Desktop:** Wir installieren die VM wie einen echten **Server** **ohne**
+Desktop-Umgebung (also ohne Fenster und Maus). Ein Server steht meistens in einem Rechenzentrum,
+und niemand sitzt davor. Man steuert ihn aus der Ferne mit Text-Befehlen. Ohne Desktop braucht
+die VM ausserdem **viel weniger Arbeitsspeicher**, und die Installation geht schneller.
+Stattdessen installieren wir einen **SSH-Server**, damit du die VM in Aufgabe 5 fernsteuern kannst.
+
+**Englisch:** Du installierst Debian auf **Englisch**, so wie die meisten Server auf der Welt.
+Fehlermeldungen auf Englisch findet man im Internet viel leichter. Nur die **Tastatur** stellst du
+auf **Schweizerdeutsch** (Swiss German), damit die Tasten stimmen.
 
 ### Aufträge
 
-Klicke in das Fenster deiner VM. Arbeite die Tabelle **Zeile für Zeile** ab. Mit **Weiter** (unten
-rechts) kommst du zur nächsten Frage. Wenn du dich verklickt hast, kommst du mit **Zurück** oft
-eine Frage zurück. Fragen, die **nicht** in der Tabelle stehen, beantwortest du mit dem, was schon
-ausgewählt ist.
+Klicke in das Fenster deiner VM. Arbeite die Tabelle **Zeile für Zeile** ab. Mit **Continue**
+(unten rechts) kommst du zur nächsten Frage, mit **Go Back** oft eine Frage zurück. Fragen, die
+**nicht** in der Tabelle stehen, beantwortest du mit dem, was schon ausgewählt ist.
 
 > **Maus gefangen?** Wenn die Maus im Fenster der VM festhängt, drückst du `Ctrl` + `Alt`
 > (beide links). Dann ist die Maus wieder frei.
 
-| Nr. | Frage / Bildschirm                                    | Deine Antwort                                         |
-|-----|-------------------------------------------------------|-------------------------------------------------------|
-| 1   | Startmenü (Debian GNU/Linux installer menu)           | **Graphical install**, mit Enter starten              |
-| 2   | Select a language                                     | **German – Deutsch**                                  |
-| 3   | Auswählen des Standorts                               | **Schweiz**                                           |
-| 4   | Tastatur konfigurieren                                | **Schweizerdeutsch**                                  |
-| 5   | Rechnername                                           | dein VM-Name, z. B. **`vm-anna`**                     |
-| 6   | Domain-Name                                           | **leer lassen**                                       |
-| 7   | Root-Passwort (und Bestätigung)                       | **beide Felder leer lassen!** (siehe Lesetext)        |
-| 8   | Vollständiger Name des neuen Benutzers                | dein Vor- und Nachname                                |
-| 9   | Benutzername für Ihr Konto                            | dein Benutzername, z. B. **`anna`** (kontrollieren!)  |
-| 10  | Passwort für den neuen Benutzer (und Bestätigung)     | ein Passwort, das du dir **merken** kannst            |
-| 11  | Partitionierungsmethode                               | **Geführt – vollständige Festplatte verwenden**       |
-| 12  | Zu partitionierende Festplatte                        | die einzige Festplatte (**vda**, ca. 21 GB)           |
-| 13  | Partitionierungsschema                                | **Alle Dateien auf eine Partition** …                 |
-| 14  | Übersicht der Partitionen                             | **Partitionierung beenden und Änderungen übernehmen** |
-| 15  | Änderungen auf die Festplatten schreiben?             | **Ja** – Achtung, vorausgewählt ist **Nein**!         |
-| –   | *Das Grundsystem wird installiert (einige Minuten)*   | *warten, Fragen aus Auftrag 1 bearbeiten*             |
-| 16  | Weitere Installationsmedien prüfen?                   | **Nein**                                              |
-| 17  | Land und Spiegelserver für das Debian-Archiv          | **Schweiz**, danach **deb.debian.org**                |
-| 18  | HTTP-Proxy                                            | **leer lassen**                                       |
-| 19  | Paketverwendungserfassung (popularity-contest)        | **Nein**                                              |
-| 20  | Softwareauswahl                                       | siehe Kasten unten                                    |
-| –   | *Software wird installiert (einige Minuten)*          | *warten, Fragen aus Auftrag 1 bearbeiten*             |
-| 21  | GRUB-Bootloader auf dem primären Laufwerk installieren? | **Ja**, danach **/dev/vda** auswählen               |
-| 22  | Installation abgeschlossen                            | **Weiter**. Die VM startet neu.                       |
+| Nr. | Frage / Bildschirm (englisch)                          | Deine Antwort                                         |
+|-----|--------------------------------------------------------|-------------------------------------------------------|
+| 1   | Debian GNU/Linux installer menu                        | **Graphical install**, mit Enter starten              |
+| 2   | Select a language                                      | **English**                                           |
+| 3   | Select your location                                   | **other**, danach **Europe**, danach **Switzerland**  |
+| 4   | Configure locales                                      | **United States – en_US.UTF-8**                       |
+| 5   | Configure the keyboard                                 | **Swiss German** (nicht American English!)            |
+| 6   | Hostname                                               | dein VM-Name, z. B. **`vm-anna`**                     |
+| 7   | Domain name                                            | **leer lassen**                                       |
+| 8   | Root password (und Re-enter password to verify)        | **beide Felder leer lassen!** (siehe Lesetext)        |
+| 9   | Full name for the new user                             | dein Vor- und Nachname                                |
+| 10  | Username for your account                              | dein Benutzername, z. B. **`anna`** (kontrollieren!)  |
+| 11  | Choose a password for the new user (und Re-enter …)    | ein Passwort, das du dir **merken** kannst            |
+| 12  | Partitioning method                                    | **Guided – use entire disk**                          |
+| 13  | Select disk to partition                               | die einzige Festplatte (**vda**, ca. 21 GB)           |
+| 14  | Partitioning scheme                                    | **All files in one partition** …                      |
+| 15  | Übersicht der Partitionen                              | **Finish partitioning and write changes to disk**     |
+| 16  | Write the changes to disks?                            | **Yes** – Achtung, vorausgewählt ist **No**!          |
+| –   | *Installing the base system (einige Minuten)*          | *warten, Fragen unten bearbeiten*                     |
+| 17  | Scan extra installation media?                         | **No**                                                |
+| 18  | Debian archive mirror country / Debian archive mirror  | **Switzerland**, danach **deb.debian.org**            |
+| 19  | HTTP proxy information                                 | **leer lassen**                                       |
+| 20  | Participate in the package usage survey?               | **No**                                                |
+| 21  | Software selection                                     | siehe Kasten unten                                    |
+| –   | *Select and install software (einige Minuten)*         | *warten, Fragen unten bearbeiten*                     |
+| 22  | Install the GRUB boot loader to your primary drive?    | **Yes**, danach **/dev/vda** auswählen                |
+| 23  | Installation complete                                  | **Continue**. Die VM startet neu.                     |
 
-> **Softwareauswahl (Nr. 20) – genau lesen!**
+> **Software selection (Nr. 21) – genau lesen!**
 > Es soll **nur** bei diesen zwei Einträgen ein Häkchen sein:
-> **SSH server** und **Standard-Systemwerkzeuge**.
-> Entferne das Häkchen bei der **Desktop-Umgebung** und bei **GNOME**.
+> **SSH server** und **standard system utilities**.
+> Entferne das Häkchen bei **Debian desktop environment** und bei **GNOME**.
 > Alle anderen Einträge bleiben ohne Häkchen.
 
 Nach dem Neustart erscheint ein schwarzer Bildschirm mit weisser Schrift und der Zeile
-`vm-anna login:`. Dann ist die Installation fertig. Melde dich **noch nicht** an, das machst du in
-Aufgabe 6.
+`vm-anna login:`. Dann ist die Installation fertig.
 
-**Auftrag 1 (während des Wartens):** Erstelle die Datei `~/VM-Ergebnisse/aufgabe5_installation.txt`
+**Während des Wartens:** Erstelle die Datei `~/VM-Ergebnisse/aufgabe4_installation.txt`
 (erste Zeile: dein Name) und beantworte:
 
-- a) Welchen **Rechnernamen** und welchen **Benutzernamen** hast du gewählt? (**Kein** Passwort
-     hinschreiben!)
-- b) Das Installationsprogramm warnt, dass alle Daten auf der Festplatte gelöscht werden. Warum ist
-     das für deinen Laptop **ungefährlich**?
+- a) Welchen **Rechnernamen** (hostname) und welchen **Benutzernamen** hast du gewählt?
+     (**Kein** Passwort hinschreiben!)
+- b) Das Installationsprogramm warnt, dass alle Daten auf der Festplatte gelöscht werden.
+     Warum ist das für deinen Laptop **ungefährlich**?
 - c) Warum hast du das Root-Passwort **leer** gelassen? Was darf dein Benutzer deshalb?
-- d) Was ist der Unterschied zwischen «als root arbeiten» und «`sudo` benutzen»? Warum ist `sudo`
-     sicherer?
-- e) Nenne **zwei Gründe** aus dem Text, warum wir **keine** Desktop-Umgebung installieren.
+- d) Nenne **zwei Gründe** aus dem Text, warum wir **keine** Desktop-Umgebung installieren.
 
 ---
 
-## Aufgabe 6 – `aufgabe6_erster_start`
+## Aufgabe 5 – `aufgabe5_ssh`
 
-### Lesetext: Die IP-Adresse
+### Lesetext: Anmelden und fernsteuern
 
-Jedes Gerät in einem Netzwerk hat eine **IP-Adresse**. Sie besteht aus vier Zahlen mit Punkten
-dazwischen, z. B. `192.168.122.57`. Über diese Adresse finden sich die Geräte gegenseitig, so wie
-ein Brief über die Postadresse ankommt. Deine VM hat ihre IP-Adresse beim Starten automatisch vom
-privaten NAT-Netzwerk auf deinem Laptop bekommen. Du brauchst sie in den nächsten Aufgaben.
+Jedes Gerät in einem Netzwerk hat eine **IP-Adresse**, z. B. `192.168.122.57`. Über diese Adresse
+finden sich die Geräte, so wie ein Brief über die Postadresse ankommt.
+
+Im Linux-Auftrag hast du gelesen, dass man Server aus der Ferne mit Text-Befehlen steuert. Das
+Werkzeug dafür heisst **SSH** («Secure Shell»). Mit SSH öffnest du im Terminal deines Laptops ein
+Terminal **auf einem anderen Computer**. Alles, was durchs Netzwerk geht, ist **verschlüsselt**.
+
+```
+ssh benutzer@adresse
+```
+
+- `benutzer` ist dein Benutzername **in der VM**. `@` heisst «at» (= «bei»).
+- Beim **allerersten** Verbinden fragt SSH: `Are you sure you want to continue connecting
+  (yes/no/[fingerprint])?` Hier musst du das ganze Wort **`yes`** ausschreiben.
+- Beim Passwort erscheinen **keine Zeichen**, auch keine Sternchen. Das ist normal.
+- Mit **`exit`** beendest du die Verbindung und bist wieder auf deinem Laptop.
+
+**Wo bin ich?** Schau **vor jedem Befehl** auf die Eingabeaufforderung. Steht dort `vm-anna`,
+tippst du in der VM.
+
+**Ein einzelner Befehl:** Schreibst du einen Befehl hinter die Adresse, führt SSH nur diesen
+Befehl in der VM aus und kommt sofort zurück. Das Ergebnis erscheint **auf deinem Laptop**, also
+kannst du es mit `>>` in eine Datei auf dem Laptop schreiben:
+
+```
+ssh anna@192.168.122.57 hostname >> ~/VM-Ergebnisse/aufgabe5_ssh.txt
+```
 
 ### Aufträge
 
-1. Klicke in das Fenster der VM. Tippe bei `login:` deinen **Benutzernamen** und drücke Enter.
-   Tippe danach dein Passwort und drücke Enter. **Beim Passwort erscheinen keine Zeichen, auch
-   keine Sternchen.** Das ist unter Linux normal. Tippe einfach weiter.
-2. Schau dir die Eingabeaufforderung an. Sie sieht etwa so aus: `anna@vm-anna:~$`
-3. Tippe in der VM diese zwei Befehle:
+1. Klicke in das Fenster der VM. Melde dich mit deinem Benutzernamen und Passwort an.
+2. Tippe in der VM `hostname -I`. Das ist die IP-Adresse deiner VM (die erste Adresse, die mit
+   `192.168.` beginnt). **Schreib sie hier auf:** ____ . ____ . ____ . ____
+3. Schreibe auf dem **Laptop** deinen Namen in die Datei `~/VM-Ergebnisse/aufgabe5_ssh.txt`.
+4. Verbinde dich im Terminal deines Laptops per SSH mit der VM. Tippe `hostname` und beende die
+   Verbindung mit `exit`.
+5. Hänge jetzt die Ergebnisse dieser **drei** Befehle **aus der VM** an deine Ergebnisdatei an
+   (SSH mit einem einzelnen Befehl, siehe Lesetext). **Tipp:** Mit `↑` holst du den letzten Befehl
+   zurück und musst nur den Befehl in der Mitte ändern.
    ```
-   hostname -I
-   cat /etc/debian_version
+   hostname
+   free -h
+   groups
    ```
-   `hostname -I` zeigt die IP-Adresse(n) der VM. `/etc/debian_version` enthält die genaue
-   Versionsnummer von Debian.
-4. Im Fenster der VM kannst du **nichts kopieren**. Erstelle deshalb auf deinem **Laptop** mit nano
-   die Datei `~/VM-Ergebnisse/aufgabe6_erster_start.txt` (erste Zeile: dein Name) und schreibe die
-   Antworten von Hand ab:
-   - a) Die IP-Adresse deiner VM (die erste Adresse, die mit `192.168.` beginnt).
-        **Schreibe sie dir auch hier auf:** ____ . ____ . ____ . ____
-   - b) Die Debian-Version aus `/etc/debian_version`.
-   - c) Vergleiche die Eingabeaufforderung im **Terminal deines Laptops** mit der in der **VM**.
-        Was ist gleich, was ist anders? Woran erkennst du, auf welchem Computer du gerade tippst?
-   - d) Warum gibt es in der VM keine Maus und keine Fenster?
+   `groups` zeigt, in welchen **Gruppen** dein Benutzer ist. Eine Gruppe ist eine Liste von
+   Benutzern mit gleichen Rechten.
+6. Öffne die Datei mit nano und beantworte unten:
+   - a) Wie lautet die IP-Adresse deiner VM?
+   - b) Vergleiche den Arbeitsspeicher der VM mit deinem Laptop aus Aufgabe 1. Warum hat die VM
+        weniger?
+   - c) Woran erkennst du, ob du gerade auf dem Laptop oder in der VM tippst?
+   - d) Dein Benutzer ist in der Gruppe `sudo`. Warum? (Denk an Aufgabe 4.)
 
 > Lass die VM ab jetzt einfach laufen. Du kannst ihr Fenster verkleinern, aber **schliess** die VM
 > nicht und fahr sie nicht herunter.
 
 ---
 
-## Aufgabe 7 – `aufgabe7_ssh`
-
-### Lesetext: Fernsteuerung mit SSH
-
-Im Linux-Auftrag hast du gelesen, dass Server oft keinen Bildschirm haben und man sie aus der
-Ferne mit Text-Befehlen steuert. Das Werkzeug dafür heisst **SSH** («Secure Shell»). Mit SSH
-öffnest du im Terminal deines Laptops ein Terminal **auf einem anderen Computer**. Alles, was
-dabei durchs Netzwerk geht, ist **verschlüsselt**. Niemand kann mitlesen, auch nicht dein Passwort.
-
-```
-ssh benutzer@adresse
-```
-
-- `benutzer` ist dein Benutzername **in der VM**.
-- Das Zeichen `@` heisst «at» (= «bei»). `anna@192.168.122.57` heisst also: «Benutzerin `anna`
-  auf dem Computer mit der Adresse `192.168.122.57`».
-- Beim **allerersten** Verbinden fragt SSH: `Are you sure you want to continue connecting
-  (yes/no/[fingerprint])?` Damit fragt SSH, ob du diesem Computer vertraust. Hier musst du das
-  ganze Wort **`yes`** ausschreiben. Nur `y` reicht nicht.
-- Danach fragt SSH nach dem Passwort. Wie in der VM erscheinen beim Tippen keine Zeichen.
-- Mit **`exit`** beendest du die Verbindung und bist wieder auf deinem Laptop.
-
-**Wo bin ich?** Ab jetzt hast du zwei Computer, die gleich aussehen. Schau deshalb **vor jedem
-Befehl** auf die Eingabeaufforderung. Steht dort `vm-anna`, tippst du in der VM.
-
-**Ein einzelner Befehl:** Du kannst einen Befehl auch direkt hinter die Adresse schreiben. Dann
-führt SSH nur diesen einen Befehl in der VM aus und kommt sofort zurück:
-
-```
-ssh anna@192.168.122.57 hostname
-```
-
-Das Ergebnis erscheint im Terminal **deines Laptops**. Das heisst: Mit `>>` kannst du es in eine
-Datei **auf deinem Laptop** schreiben.
-
-### Aufträge
-
-1. Schreibe deinen Namen in die Datei `~/VM-Ergebnisse/aufgabe7_ssh.txt`.
-2. Verbinde dich im Terminal deines Laptops per SSH mit deiner VM. Benutze **deinen**
-   Benutzernamen und die IP-Adresse aus Aufgabe 6.
-3. Schau dir die Eingabeaufforderung an. Tippe `whoami` und `hostname` und beende danach die
-   Verbindung mit `exit`.
-4. Hänge jetzt nacheinander die Ergebnisse dieser **fünf** Befehle **aus der VM** an deine
-   Ergebnisdatei **auf dem Laptop** an. Benutze dafür SSH mit einem einzelnen Befehl (siehe
-   Lesetext). Jedes Mal wird nach dem Passwort gefragt.
-   **Tipp:** Mit `↑` holst du den letzten Befehl zurück und musst nur noch den Befehl in der
-   Mitte ändern.
-   ```
-   hostname
-   nproc
-   free -h
-   lsblk
-   groups
-   ```
-   `lsblk` zeigt die Festplatten («list block devices»), `groups` zeigt, in welchen **Gruppen**
-   dein Benutzer ist. Eine Gruppe ist eine Liste von Benutzern, die gleiche Rechte haben.
-5. Kontrolliere mit `cat`, ob alles in der Datei steht. Die Ergebnisse von `nproc` und `free -h`
-   müssen **anders** aussehen als in Aufgabe 2. Wenn nicht, hast du sie auf dem Laptop statt in
-   der VM ausgeführt.
-6. Öffne die Datei mit nano und beantworte unten:
-   - a) Vergleiche die Anzahl **Kerne** und den **Arbeitsspeicher** der VM mit deinem Laptop aus
-        Aufgabe 2. Warum sind die Zahlen in der VM kleiner?
-   - b) `lsblk` zeigt eine Festplatte `vda` mit ca. 20 GiB. Wo ist diese Festplatte in Wirklichkeit
-        gespeichert? (Die Antwort steht in Aufgabe 1 und 2.)
-   - c) Dein Benutzer ist in der Gruppe `sudo`. Was darf er deshalb? Warum ist er in dieser Gruppe?
-   - d) Warum hast du beim Verbinden `anna@` (bzw. deinen Namen) vor die Adresse geschrieben?
-        Was meinst du, was passiert ohne?
-
----
-
-## Aufgabe 8 – `aufgabe8_webserver`
+## Aufgabe 6 – `aufgabe6_webserver`
 
 ### Lesetext: Programme installieren und Webseiten anbieten
 
-Unter Linux installiert man Programme meistens nicht von Webseiten, sondern mit einer
-**Paketverwaltung**. Sie funktioniert ähnlich wie ein App Store auf dem Handy: Alle Programme
-(**Pakete**) liegen geprüft auf den Servern von Debian. Unter Debian heisst die Paketverwaltung
-**apt**.
+Unter Linux installiert man Programme mit einer **Paketverwaltung**, ähnlich wie mit einem App
+Store. Unter Debian heisst sie **apt**. Programme installieren verändert das System, darum
+braucht es `sudo`.
 
 | Befehl                    | Was er macht                                                       |
 |---------------------------|--------------------------------------------------------------------|
-| `sudo apt update`         | lädt die **aktuelle Liste** aller Pakete herunter. Es wird noch nichts installiert. |
+| `sudo apt update`         | lädt die **aktuelle Liste** aller Pakete herunter.                 |
 | `sudo apt install paket`  | lädt das Paket herunter und **installiert** es.                    |
 
-Programme installieren verändert das System. Darum braucht es `sudo`.
+Ein **Webserver** ist ein Programm, das Webseiten an Browser ausliefert. Wir installieren den
+Webserver **nginx** (ausgesprochen «engine-x»). Er liefert die Dateien aus dem Ordner
+**`/var/www/html`** aus. Die Startseite heisst `index.html`. Dieser Ordner gehört dem System,
+darum braucht es auch zum Bearbeiten `sudo`. Webseiten werden in **HTML** geschrieben:
+`<h1>…</h1>` ist eine Überschrift, `<p>…</p>` ein Absatz.
 
-Ein **Webserver** ist ein Programm, das Webseiten an Browser ausliefert. Wenn du im Browser eine
-Adresse eintippst, fragt der Browser beim Webserver nach der Seite, und der Webserver schickt sie
-zurück. Wir installieren den Webserver **nginx** (ausgesprochen «engine-x»). Er liefert die Dateien
-aus dem Ordner **`/var/www/html`** aus. Die Startseite heisst `index.html`. Dieser Ordner gehört
-dem System, darum braucht es auch zum Bearbeiten `sudo`.
-
-Webseiten werden in **HTML** geschrieben. Der Text steht zwischen **Tags** in spitzen Klammern:
-`<h1>…</h1>` ist eine grosse Überschrift, `<p>…</p>` ein normaler Absatz.
-
-Mit dem Befehl **`curl`** kannst du eine Webseite im Terminal abholen statt im Browser. Du siehst
-dann den HTML-Text der Seite.
+Mit **`curl`** holst du eine Webseite im Terminal ab statt im Browser.
 
 ### Aufträge
 
-1. Verbinde dich per SSH mit deiner VM (nicht mit einem einzelnen Befehl, sondern so, dass du in
-   der VM bleibst).
-2. Lade in der VM die aktuelle Paketliste herunter und installiere danach das Paket `nginx`. Wenn
-   `sudo` nach einem Passwort fragt, ist das **dein** Passwort. Wenn `apt` fragt, ob du fortfahren
-   möchtest, drückst du `J` (bzw. `Y`) und Enter.
-3. Öffne auf deinem Laptop den Firefox und tippe als Adresse `http://` und dahinter die
-   IP-Adresse deiner VM ein, z. B. `http://192.168.122.57`. Es sollte **Welcome to nginx!**
-   erscheinen.
-4. Erstelle jetzt in der VM deine eigene Startseite:
+1. Verbinde dich per SSH mit deiner VM (so, dass du in der VM bleibst).
+2. Lade die Paketliste herunter und installiere das Paket `nginx`. Wenn `apt` fragt, ob du
+   fortfahren möchtest, drückst du `Y` (für «yes») und Enter.
+3. Öffne auf dem Laptop den Firefox und tippe `http://` und die IP-Adresse deiner VM ein,
+   z. B. `http://192.168.122.57`. Es erscheint **Welcome to nginx!**
+4. Erstelle in der VM deine eigene Startseite mit `sudo nano /var/www/html/index.html`.
+   Tippe diesen Text ab und ersetze die Teile in Grossbuchstaben:
    ```
-   sudo nano /var/www/html/index.html
-   ```
-   Tippe diesen Text ab. Ersetze die Teile in Grossbuchstaben durch deine eigenen Angaben:
-   ```
-   <!DOCTYPE html>
-   <html>
-   <head><meta charset="utf-8"><title>Meine VM</title></head>
-   <body>
+   <meta charset="utf-8">
    <h1>Willkommen auf VM-NAME</h1>
    <p>Diese Seite hat VORNAME NACHNAME gemacht.</p>
-   <p>Mein Lieblingshobby: HOBBY</p>
-   </body>
-   </html>
    ```
-   Speichern und nano verlassen.
-5. Lade die Seite im Firefox neu (Taste `F5`). Jetzt erscheint deine Seite.
-6. Beende die SSH-Verbindung. Schreibe auf dem **Laptop** deinen Namen in die Datei
-   `~/VM-Ergebnisse/aufgabe8_webserver.txt` und hänge danach die Webseite mit `curl` an. Das `-s`
-   heisst «silent» (= still) und unterdrückt Statusmeldungen:
+   Die erste Zeile sorgt dafür, dass Umlaute wie ä, ö, ü richtig angezeigt werden.
+   Speichern und nano verlassen. Lade die Seite im Firefox neu (`F5`).
+5. Beende die SSH-Verbindung. Schreibe auf dem **Laptop** deinen Namen in die Datei
+   `~/VM-Ergebnisse/aufgabe6_webserver.txt` und hänge die Webseite an (`-s` = «silent», still):
    ```
-   curl -s http://192.168.122.57 >> ~/VM-Ergebnisse/aufgabe8_webserver.txt
+   curl -s http://192.168.122.57 >> ~/VM-Ergebnisse/aufgabe6_webserver.txt
    ```
-7. Öffne die Datei mit nano und beantworte unten:
-   - a) Warum brauchst du für `apt install` und für das Bearbeiten von `index.html` den Befehl
-        `sudo`, für `nano ~/VM-Ergebnisse/…` aber nicht?
-   - b) Was ist der Unterschied zwischen `apt update` und `apt install`?
-   - c) Der Webserver läuft in der VM, aber du hast die Seite im Firefox auf deinem Laptop
-        gesehen. Erkläre, wie das geht.
-   - d) Was passiert mit deiner Webseite, wenn die VM heruntergefahren wird? Begründe.
+6. Öffne die Datei mit nano und beantworte unten:
+   - a) Warum brauchst du für `apt install` und für `index.html` den Befehl `sudo`, für
+        `nano ~/VM-Ergebnisse/…` aber nicht?
+   - b) Der Webserver läuft in der VM, aber du hast die Seite im Firefox auf dem Laptop gesehen.
+        Erkläre, wie das geht.
+   - c) Was passiert mit deiner Webseite, wenn die VM heruntergefahren wird? Begründe.
 
 ---
 
-## Aufgabe 9 – `aufgabe9_schnappschuss`
+## Aufgabe 7 – `aufgabe7_rueckblick`
 
-### Lesetext: Schnappschüsse
+Erstelle mit nano die Datei `~/VM-Ergebnisse/aufgabe7_rueckblick.txt` (erste Zeile: dein Name)
+und beantworte die Fragen **ohne** auf den Blättern nachzuschauen. Schreibe ehrlich, was du noch
+weisst.
 
-Ein **Schnappschuss** speichert den **ganzen Zustand** einer VM in diesem Moment: alle Dateien auf
-ihrer Festplatte und sogar die Programme, die gerade laufen. Später kannst du zu diesem Zustand
-**zurückkehren**. Es ist wie ein **Speicherpunkt in einem Videospiel**: Wenn danach etwas schiefgeht,
-lädst du einfach den Speicherpunkt. Aber Achtung: Alles, was **nach** dem Speicherpunkt passiert
-ist, ist dann weg, auch die guten Sachen.
-
-Fachleute machen zum Beispiel vor einem grossen Update einen Schnappschuss. Geht beim Update
-etwas kaputt, ist der Server in einer Minute wieder so wie vorher.
-
-### Aufträge
-
-1. Schreibe deinen Namen in die Datei `~/VM-Ergebnisse/aufgabe9_schnappschuss.txt`.
-2. **Schnappschuss erstellen:** Geh zum Fenster deiner VM. Klicke oben im Menü auf **Anzeigen** →
-   **Schnappschuss**. Klicke unten links auf **+** («Neuen Schnappschuss erstellen»). Trage als
-   Name **`vor-dem-chaos`** ein und wähle beim **Schnappschussmodus** die Einstellung **intern**.
-   Klicke auf **Fertig** und warte, bis der Schnappschuss in der Liste links erscheint.
-3. **Chaos machen:** Verbinde dich per SSH mit der VM und **lösche** deine Webseite:
-   ```
-   sudo rm /var/www/html/index.html
-   ```
-   Beende die SSH-Verbindung. Lade die Seite im Firefox neu. Deine Seite ist weg, nginx zeigt
-   wieder seine eigene Startseite.
-4. Hänge den jetzigen Zustand mit `curl` an deine Ergebnisdatei an (wie in Aufgabe 8, Auftrag 6).
-5. **Zurück in die Vergangenheit:** Wähle im Fenster der VM in der Liste der Schnappschüsse
-   `vor-dem-chaos` aus. Klicke unten auf das **Dreieck** («Ausgewählten Schnappschuss starten»)
-   und bestätige die Frage mit **Ja**.
-6. Lade die Seite im Firefox neu. Hänge den Zustand nochmals mit `curl` an deine Ergebnisdatei an.
-7. Klicke im Fenster der VM auf **Anzeigen** → **Konsole**, damit du wieder den Bildschirm der VM
-   siehst.
-8. Öffne die Ergebnisdatei mit nano. Darin stehen jetzt zwei Webseiten. Beantworte unten:
-   - a) Welche der zwei Webseiten in der Datei stammt von **vor** und welche von **nach** dem
-        Zurückkehren zum Schnappschuss? Woran erkennst du das?
-   - b) Erkläre in deinen eigenen Worten, was ein Schnappschuss ist.
-   - c) Stell dir vor, du hättest **nach** dem Schnappschuss eine wichtige Datei in der VM
-        gespeichert und danach den Schnappschuss gestartet. Was ist mit der Datei passiert? Warum?
-
----
-
-## Aufgabe 10 – `aufgabe10_rueckblick`
-
-Erstelle mit nano die Datei `~/VM-Ergebnisse/aufgabe10_rueckblick.txt` (erste Zeile: dein Name)
-und beantworte die Fragen **ohne** auf den Blättern nachzuschauen. Es ist nicht schlimm, wenn du
-nicht alles weisst. Schreibe ehrlich, was du noch weisst.
-
-1. Erkläre in je einem kurzen Satz: **Host**, **Gast**, **Hypervisor**, **ISO-Datei**,
-   **Prüfsumme**, **SSH**, **sudo**, **Schnappschuss**.
+1. Erkläre in je einem kurzen Satz: **Host**, **Gast**, **ISO-Datei**, **Prüfsumme**, **SSH**,
+   **sudo**.
 2. Bring diese Schritte in die richtige Reihenfolge. Schreibe nur die Buchstaben auf.
    - A) Debian installieren
    - B) Prüfsumme kontrollieren
    - C) Per SSH verbinden
    - D) ISO-Datei herunterladen
    - E) VM erstellen
-3. Ein Kollege sagt: «In der VM war ‹vollständige Festplatte verwenden› kein Problem. Also kann ich
-   Debian genau so auch direkt auf meinem Laptop installieren, ohne vorher etwas zu sichern.»
-   Was antwortest du ihm? Begründe.
+3. Ein Kollege sagt: «In der VM war ‹Guided – use entire disk› kein Problem. Also kann ich Debian
+   genau so auch direkt auf meinem Laptop installieren, ohne vorher etwas zu sichern.»
+   Was antwortest du ihm?
 4. Was war für dich heute am schwierigsten? Was hat dir am besten gefallen?
 
 ---
 
-## ★ Zusatz – `zusatz_hardware` (freiwillig, nur wenn du noch Zeit hast)
+## ★ Zusatz – `zusatz_schnappschuss` (freiwillig, nur wenn du noch Zeit hast)
 
-Eine VM kann man nachträglich «aufrüsten», ohne einen Schraubenzieher anzufassen. Wie bei einem
-echten Computer muss sie dafür aber **ausgeschaltet** sein.
+Ein **Schnappschuss** speichert den **ganzen Zustand** einer VM, wie ein **Speicherpunkt in einem
+Videospiel**. Wenn danach etwas schiefgeht, kehrst du zum Speicherpunkt zurück. Aber Achtung:
+Alles, was **nach** dem Speicherpunkt passiert ist, ist dann weg, auch die guten Sachen.
 
-1. Schreibe deinen Namen in die Datei `~/VM-Ergebnisse/zusatz_hardware.txt`.
-2. Verbinde dich per SSH mit der VM und fahre sie herunter: `sudo poweroff`
-   (die SSH-Verbindung bricht dabei ab, das ist normal).
-3. Klicke im Fenster der VM auf **Anzeigen** → **Details**. Klicke links auf **Speicher**. Setze
-   **beide** Werte (aktuelle und maximale Zuweisung) auf **3072** MiB und klicke auf
-   **Übernehmen**.
-4. Klicke auf **Anzeigen** → **Konsole** und starte die VM mit dem **Dreieck** in der Leiste oben
-   («Starten»). Warte, bis `login:` erscheint.
-5. Hänge das Ergebnis von `free -h` **aus der VM** an deine Ergebnisdatei an (per SSH, wie in
-   Aufgabe 7). Hinweis: Wenn SSH keine Verbindung bekommt, hat die VM eventuell eine neue
-   IP-Adresse bekommen. Schau in der VM mit `hostname -I` nach.
-6. Beantworte unten in der Datei:
-   - a) Wie viel Arbeitsspeicher zeigt `free -h` jetzt? Wie viel war es in Aufgabe 7?
-   - b) Wie viel Arbeitsspeicher könntest du der VM **höchstens** geben, und warum wäre das
-        keine gute Idee? (Denk an Aufgabe 2.)
+1. Schreibe deinen Namen in die Datei `~/VM-Ergebnisse/zusatz_schnappschuss.txt`.
+2. **Schnappschuss erstellen:** Klicke im Fenster der VM auf **Anzeigen** → **Schnappschuss**.
+   Klicke unten links auf **+**. Name: **`vor-dem-chaos`**, Schnappschussmodus: **intern**.
+   Klicke auf **Fertig** und warte, bis der Schnappschuss in der Liste erscheint.
+3. **Chaos machen:** Verbinde dich per SSH mit der VM, lösche deine Webseite mit
+   `sudo rm /var/www/html/index.html` und beende die Verbindung. Hänge die Webseite mit `curl` an
+   deine Ergebnisdatei an (wie in Aufgabe 6).
+4. **Zurück:** Wähle im Fenster der VM `vor-dem-chaos` aus, klicke unten auf das **Dreieck**
+   («Ausgewählten Schnappschuss starten») und bestätige mit **Ja**. Hänge die Webseite nochmals
+   mit `curl` an. Klicke danach auf **Anzeigen** → **Konsole**.
+5. Beantworte unten in der Datei:
+   - a) Welche der zwei Webseiten in der Datei ist von **vor** und welche von **nach** dem
+        Zurückkehren? Woran erkennst du das?
+   - b) Du hättest **nach** dem Schnappschuss eine wichtige Datei in der VM gespeichert und dann
+        den Schnappschuss gestartet. Was ist mit der Datei passiert? Warum?
 
 ---
 
 ## ★ Bonus – `bonus_virsh` (freiwillig, nur wenn du noch Zeit hast)
 
-Alles, was du im Virtual Machine Manager mit der Maus machst, geht auch mit dem Befehl `virsh`.
-Fachleute benutzen das, wenn sie viele VMs auf einmal steuern oder nur per SSH auf den Host
-zugreifen können.
+Alles, was du im Virtual Machine Manager mit der Maus machst, geht auch mit `virsh`.
 
-| Befehl (immer mit `virsh -c qemu:///system` davor) | Was er macht                       |
-|-----------------------------------------------------|------------------------------------|
+| Befehl (immer mit `virsh -c qemu:///system` davor) | Was er macht                        |
+|-----------------------------------------------------|-------------------------------------|
 | `list --all`                                        | zeigt **alle** VMs und ihren Status |
 | `shutdown vm-anna`                                  | fährt die VM sauber **herunter**    |
 | `start vm-anna`                                     | **startet** die VM                  |
-| `snapshot-list vm-anna`                             | zeigt die **Schnappschüsse** der VM |
 
-1. Schreibe deinen Namen in die Datei `~/VM-Ergebnisse/bonus_virsh.txt` und hänge die Ergebnisse
-   von `list --all` und `snapshot-list` an.
-2. Fahre deine VM mit `virsh` herunter. Warte ein paar Sekunden und hänge das Ergebnis von
-   `list --all` nochmals an.
+1. Schreibe deinen Namen in die Datei `~/VM-Ergebnisse/bonus_virsh.txt` und hänge das Ergebnis
+   von `list --all` an.
+2. Fahre deine VM mit `virsh` herunter. Warte ein paar Sekunden und hänge `list --all` nochmals an.
 3. Starte die VM wieder mit `virsh`.
 4. Beantworte unten in der Datei:
-   - a) Was ist der Unterschied zwischen `virsh -c qemu:///system list` **mit** und **ohne**
-        `--all`? Probiere es aus, wenn die VM ausgeschaltet ist.
+   - a) Was ist der Unterschied zwischen `list` **mit** und **ohne** `--all`? Probiere es aus,
+        wenn die VM ausgeschaltet ist.
    - b) Eine Firma hat 200 VMs. Warum ist `virsh` dort praktischer als der Virtual Machine Manager?
 
 ---
@@ -769,7 +554,7 @@ Kontrolliere mit diesem Befehl, ob alle deine Dateien im Ordner `VM-Ergebnisse` 
 ls ~/VM-Ergebnisse
 ```
 
-Es sollten mindestens **10 Dateien** sein (Aufgaben 1 bis 10), deren Namen genau so heissen wie
+Es sollten mindestens **7 Dateien** sein (Aufgaben 1 bis 7), deren Namen genau so heissen wie
 die Aufgaben. **Lass deine VM laufen**, die Betreuungsperson schaut sie vielleicht noch an.
 
 **Gratuliere – du hast deinen eigenen Server gebaut und betrieben! 🖥️🐧**

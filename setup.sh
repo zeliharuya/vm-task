@@ -6,7 +6,7 @@
 #   bash <(curl -fsSL https://raw.githubusercontent.com/zeliharuya/vm-task/main/setup.sh || wget -qO- https://raw.githubusercontent.com/zeliharuya/vm-task/main/setup.sh)
 #
 # Lokal:
-#   bash setup.sh                -> Programme installieren, Übungsordner (neu) anlegen, Ergebnisse bleiben
+#   bash setup.sh                -> Programme installieren, Ergebnis-Ordner anlegen, Ergebnisse bleiben
 #   bash setup.sh --neue-gruppe  -> zusätzlich: Ergebnisse, VMs «vm-*», heruntergeladene Debian-ISOs
 #                                   und SSH-Schlüssel der VMs löschen (fragt vorher nach)
 set -euo pipefail
@@ -15,7 +15,6 @@ set -euo pipefail
 SKRIPT="${BASH_SOURCE[0]:-}"
 [[ -f "$SKRIPT" ]] && SKRIPT="$(realpath "$SKRIPT")"
 
-BASIS="$HOME/vm-auftrag"
 ERGEBNISSE="$HOME/VM-Ergebnisse"
 # xdg-user-dir gibt $HOME zurück, wenn kein Download-Ordner eingetragen ist.
 DOWNLOADS="$(xdg-user-dir DOWNLOAD 2>/dev/null || true)"
@@ -124,17 +123,8 @@ if [[ $NEUE_GRUPPE -eq 1 ]]; then
     fi
 fi
 
-# --- Übungsdateien (Aufgabe 3, Teil B) -------------------------------------------
-rm -rf "$BASIS"
-mkdir -p "$ERGEBNISSE" "$BASIS/pruefsummen"
-cd "$BASIS/pruefsummen"
-printf 'Das ist das Übungspaket 1.\nEs enthält ein Spiel.\n' > paket1.iso
-printf 'Das ist das Übungspaket 2.\nEs enthält ein Malprogramm.\n' > paket2.iso
-printf 'Das ist das Übungspaket 3.\nEs enthält einen Taschenrechner.\n' > paket3.iso
-sha256sum paket1.iso paket2.iso paket3.iso > SHA256SUMS
-# Ein einziges Zeichen ändern: Diese Datei ist «unterwegs beschädigt» worden.
-sed -i 's/Malprogramm/Malpr0gramm/' paket2.iso
-cd "$HOME"
+# --- Ergebnis-Ordner -------------------------------------------------------------
+mkdir -p "$ERGEBNISSE"
 
 # --- Prüfungen ------------------------------------------------------------------
 if [[ ! -e /dev/kvm ]]; then
@@ -158,8 +148,7 @@ if ! command -v firefox >/dev/null && ! command -v firefox-esr >/dev/null; then
 fi
 
 echo
-echo "Fertig! Übungsdateien: $BASIS"
-echo "        Ergebnisse:     $ERGEBNISSE"
+echo "Fertig! Ergebnisse: $ERGEBNISSE"
 if [[ -n "$(ls -A "$ERGEBNISSE")" ]]; then
     echo
     echo "Hinweis: In $ERGEBNISSE liegen noch Dateien (frühere Gruppe?)."

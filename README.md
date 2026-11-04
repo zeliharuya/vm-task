@@ -1,10 +1,11 @@
 # vm-task
 
 Fortgeschrittener Auftrag für Schnupperlehrlinge, die den
-[Linux-Auftrag](https://github.com/zeliharuya/linux-task) gemacht haben. Dauer ca. 3 Stunden.
+[Linux-Auftrag](https://github.com/zeliharuya/linux-task) gemacht haben. Dauer ca. 2½ Stunden (in einem 3-Stunden-Block bleibt Reserve).
 Die Schnupperlehrlinge laden die Debian-ISO herunter, prüfen die Prüfsumme, erstellen mit dem
 **Virtual Machine Manager** eine VM, installieren Debian als Server ohne Desktop, steuern die VM
-per **SSH**, richten darin einen **Webserver** ein und probieren **Schnappschüsse** aus.
+per **SSH** und richten darin einen **Webserver** ein. Wer schnell ist, probiert zusätzlich
+**Schnappschüsse** und `virsh` aus.
 Pro Aufgabe speichern sie eine Datei im Ordner `~/VM-Ergebnisse` auf dem Laptop. Der Dateiname
 ist der Name der Aufgabe.
 
@@ -12,9 +13,9 @@ ist der Name der Aufgabe.
 
 | Datei | Für wen | Inhalt |
 |---|---|---|
-| `aufgabenblatt.md` | Schnupperlehrlinge | Lesetexte, Aufgaben 0–10 und zwei freiwillige Zusatzaufgaben |
+| `aufgabenblatt.md` | Schnupperlehrlinge | Lesetexte, Aufgaben 0–7 und zwei freiwillige Zusatzaufgaben |
 | `aufgabenblatt.pdf` | Schnupperlehrlinge | Das gleiche Aufgabenblatt zum Ausdrucken (A4, jede Aufgabe auf einer neuen Seite) |
-| `setup.sh` | Betreuungsperson | Bereitet einen Laptop vor (Programme, Rechte, Netzwerk, Übungsdateien) |
+| `setup.sh` | Betreuungsperson | Bereitet einen Laptop vor (Programme, Rechte, Netzwerk, Ergebnis-Ordner) |
 
 Weiteres Material für die Betreuungsperson liegt nur lokal im Ordner `betreuung/` (siehe
 `betreuung/README.md`). Dieser Ordner steht in `.gitignore` und wird nie ins öffentliche
@@ -43,7 +44,7 @@ zurück. Das Skript fragt nach dem sudo-Passwort und
 - installiert den Virtual Machine Manager, QEMU/KVM, libvirt, nano, curl und wget, falls sie fehlen,
 - nimmt den Benutzer in die Gruppe `libvirt` auf (damit er ohne Passwort VMs verwalten darf),
 - startet das NAT-Netzwerk `default` von libvirt und startet es künftig automatisch,
-- legt `~/vm-auftrag` (Übungsdateien) und `~/VM-Ergebnisse` (leer, für die Antworten) an,
+- legt `~/VM-Ergebnisse` (leer, für die Antworten) an,
 - warnt, wenn die Virtualisierung ausgeschaltet ist, zu wenig Arbeitsspeicher oder Platz da ist
   oder noch Dateien bzw. VMs von einer früheren Gruppe da sind.
 
