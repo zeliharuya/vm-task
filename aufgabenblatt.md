@@ -38,9 +38,7 @@ aus ü wird ue.
 | Jörg Beispiel   | `joerg`      | `vm-joerg`     |
 | Lea-Sophie Test | `leasophie`  | `vm-leasophie` |
 
-Schreib dir deinen Benutzernamen und den Namen deiner VM hier auf:
-
-Benutzername: ______________________   Name der VM: vm-______________________
+Überlege dir jetzt deinen Benutzernamen und den Namen deiner VM und merke sie dir.
 
 In allen Befehlen auf diesen Blättern steht als Beispiel `anna` und `vm-anna`.
 **Du ersetzt das immer durch deine eigenen Namen.**
@@ -175,57 +173,69 @@ sie benutzen, als wäre eine echte CD eingelegt. Wir nehmen die kleinste ISO-Dat
 **netinst**. Sie enthält nur das Nötigste, alles andere wird während der Installation aus dem
 Internet geladen.
 
-Beim Herunterladen kann etwas schiefgehen: Die Datei ist unvollständig, oder jemand Böses hat sie
-unterwegs verändert und ein Schadprogramm eingebaut. Deshalb veröffentlicht Debian zu jeder
-ISO-Datei eine **Prüfsumme**. Eine Prüfsumme ist wie ein **Fingerabdruck** einer Datei: eine
+**Woher lädt man Software herunter?** Immer von der **offiziellen Webseite** der Firma oder des
+Projekts, bei Debian also von **www.debian.org**. Download-Portale wie chip.de oder softonic, oder
+Werbung, die bei einer Suche ganz oben erscheint, verpacken Programme manchmal in eigene
+Installationsprogramme mit Werbung oder sogar Schadprogrammen. Oft haben sie auch alte Versionen.
+Kontrolliere deshalb immer die **Adresse** in der Adresszeile des Browsers.
+
+Beim Herunterladen kann trotzdem etwas schiefgehen: Die Datei ist unvollständig, oder jemand Böses
+hat sie unterwegs verändert und ein Schadprogramm eingebaut. Deshalb veröffentlicht Debian zu
+jeder ISO-Datei eine **Prüfsumme**. Eine Prüfsumme ist wie ein **Fingerabdruck** einer Datei: eine
 lange Zeichenkette, die aus dem ganzen Inhalt berechnet wird. Ändert sich in der Datei auch nur
-**ein einziges Zeichen**, kommt ein **komplett anderer** Fingerabdruck heraus. Wir benutzen das
-Verfahren **SHA-256**.
+**ein einziges Zeichen**, kommt ein **komplett anderer** Fingerabdruck heraus. Debian benutzt dafür
+das Verfahren **SHA-512**.
 
 | Befehl                         | Was er macht                                                          |
 |--------------------------------|-----------------------------------------------------------------------|
-| `sha256sum datei`              | berechnet die Prüfsumme der Datei.                                    |
-| `sha256sum -c SHA256SUMS`      | liest die Liste `SHA256SUMS` mit den richtigen Prüfsummen und vergleicht sie mit den Dateien («c» für «check» = prüfen). Stimmt sie, steht `OK` hinter dem Dateinamen, sonst `FEHLSCHLAG` (bzw. `FAILED`). |
+| `sha512sum datei`              | berechnet die Prüfsumme der Datei.                                    |
+| `sha512sum -c SHA512SUMS`      | liest die Liste `SHA512SUMS` mit den richtigen Prüfsummen und vergleicht sie mit den Dateien («c» für «check» = prüfen). Stimmt sie, steht `OK` hinter dem Dateinamen, sonst `FEHLSCHLAG` (bzw. `FAILED`). |
 | `ls -lh datei`                 | zeigt Informationen über die Datei an, unter anderem ihre **Grösse**. |
 
 ### Aufträge
 
-1. **Download starten** (dauert einige Minuten): Öffne den **Firefox** und tippe diese Adresse
-   ein (genau abschreiben):
+1. **Die offizielle Download-Seite finden:** Öffne den **Firefox** und suche selbst nach
+   **Debian download**. Öffne nur ein Ergebnis, dessen Adresse mit **www.debian.org** beginnt
+   (keine Werbung, keine Download-Portale). Du suchst die Seite mit dem Titel
+   **Downloading Debian**. Darauf steht: «This is Debian 13 … netinst, for 64-bit PC (amd64)».
+   Wenn du stattdessen auf der Startseite von Debian landest: Tippe in der Adresszeile hinter
+   `www.debian.org` noch `/download` und drücke Enter.
+2. **Download starten** (dauert einige Minuten): Klicke auf der Seite auf den Namen der ISO-Datei.
+   Er endet auf `-amd64-netinst.iso`. Firefox speichert sie im Ordner `Downloads`.
+3. **Während des Wartens:** Schreibe deinen Namen in die Datei `~/VM-Ergebnisse/aufgabe2_iso.txt`
+   und hänge die Adresse der Download-Seite an (ersetze die Adresse durch die, die **bei dir** in
+   der Adresszeile steht):
    ```
-   cdimage.debian.org/debian-cd/current/amd64/iso-cd/
+   echo "https://www.debian.org/download" >> ~/VM-Ergebnisse/aufgabe2_iso.txt
    ```
-   Weiter unten gibt es **drei** ISO-Dateien, deren Namen auf `-amd64-netinst.iso` enden. Wir
-   brauchen die, bei der direkt nach `debian-` eine **Zahl** kommt, also **nicht** `debian-edu-…`
-   und **nicht** `debian-mac-…`. Klicke darauf. Firefox speichert sie im Ordner `Downloads`.
-2. **Während des Wartens:** Schreibe deinen Namen in die Datei `~/VM-Ergebnisse/aufgabe2_iso.txt`.
    Tippe dann diese zwei Befehle (einmal grosses **H**, einmal kleines **h**) und vergleiche:
    ```
-   echo Hallo | sha256sum
-   echo hallo | sha256sum
+   echo Hallo | sha512sum
+   echo hallo | sha512sum
    ```
-3. Wenn der Download fertig ist: Wechsle in den Ordner `~/Downloads` und lade dort die Liste mit
-   den richtigen Prüfsummen herunter. `wget` lädt die Datei, deren Adresse du angibst:
-   ```
-   wget https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/SHA256SUMS
-   ```
-4. Hänge Informationen über die ISO-Datei an. Der Stern `*` steht für «beliebige Zeichen», so
+4. **Die Prüfsummen holen:** Auf der Download-Seite steht unter dem Namen der ISO-Datei
+   «Download checksum: **SHA512SUMS**». Klicke mit der **rechten** Maustaste auf `SHA512SUMS` und
+   wähle **Link-Adresse kopieren**. Wechsle im Terminal in den Ordner `~/Downloads`, tippe
+   `wget ` (mit Leerzeichen danach), füge die Adresse mit `Ctrl` + `Shift` + `V` ein und drücke
+   Enter. `wget` lädt die Datei, deren Adresse du angibst, in den aktuellen Ordner.
+5. Wenn der Download der ISO-Datei fertig ist: Hänge Informationen über die ISO-Datei an. Der Stern `*` steht für «beliebige Zeichen», so
    musst du die Versionsnummer nicht abtippen:
    ```
    ls -lh debian-*-amd64-netinst.iso >> ~/VM-Ergebnisse/aufgabe2_iso.txt
    ```
-5. Prüfe die ISO-Datei und hänge das Ergebnis an. Die Liste enthält die Prüfsummen aller **drei**
+6. Prüfe die ISO-Datei und hänge das Ergebnis an. Die Liste enthält die Prüfsummen von mehreren
    ISO-Dateien, du hast aber nur **eine**. Mit `--ignore-missing` («fehlende ignorieren») meckert
-   `sha256sum` nicht über die zwei anderen:
+   `sha512sum` nicht über die anderen:
    ```
-   sha256sum -c --ignore-missing SHA256SUMS >> ~/VM-Ergebnisse/aufgabe2_iso.txt
+   sha512sum -c --ignore-missing SHA512SUMS >> ~/VM-Ergebnisse/aufgabe2_iso.txt
    ```
    Kontrolliere mit `cat`, ob hinter dem Namen der ISO-Datei `OK` steht. Wenn nicht:
    Betreuungsperson fragen.
-6. Öffne die Ergebnisdatei mit nano und beantworte unten:
+7. Öffne die Ergebnisdatei mit nano und beantworte unten:
    - a) Was ist dir bei `Hallo` und `hallo` aufgefallen? Was sagt dir das über Prüfsummen?
    - b) Wie gross ist die ISO-Datei?
    - c) Was hättest du gemacht, wenn `FEHLSCHLAG` gestanden hätte? Warum?
+   - d) Warum lädt man Debian von www.debian.org herunter und nicht von einem Download-Portal?
 
 ---
 
@@ -372,7 +382,17 @@ Nach dem Neustart erscheint ein schwarzer Bildschirm mit weisser Schrift und der
 ### Lesetext: Anmelden und fernsteuern
 
 Jedes Gerät in einem Netzwerk hat eine **IP-Adresse**, z. B. `192.168.122.57`. Über diese Adresse
-finden sich die Geräte, so wie ein Brief über die Postadresse ankommt.
+finden sich die Geräte, so wie ein Brief über die Postadresse ankommt. Deine VM hat ihre
+IP-Adresse beim Starten automatisch bekommen. **Jede VM hat eine andere.** Du findest sie so
+heraus:
+
+| Wo du tippst | Befehl              | Was du siehst                                                  |
+|--------------|---------------------|----------------------------------------------------------------|
+| in der VM    | `hostname -I`       | die IP-Adresse(n) der VM. Deine ist die, die mit `192.168.` beginnt. |
+| auf dem Laptop | `virsh -c qemu:///system domifaddr vm-anna` | eine Tabelle; die IP-Adresse steht in der Spalte `Address` vor dem `/24`. |
+
+In allen Befehlen auf diesen Blättern steht `192.168.122.57` nur als **Beispiel**. Du ersetzt es
+immer durch die IP-Adresse **deiner** VM.
 
 Im Linux-Auftrag hast du gelesen, dass man Server aus der Ferne mit Text-Befehlen steuert. Das
 Werkzeug dafür heisst **SSH** («Secure Shell»). Mit SSH öffnest du im Terminal deines Laptops ein
@@ -402,19 +422,26 @@ ssh anna@192.168.122.57 hostname >> ~/VM-Ergebnisse/aufgabe5_ssh.txt
 ### Aufträge
 
 1. Klicke in das Fenster der VM. Melde dich mit deinem Benutzernamen und Passwort an.
-2. Tippe in der VM `hostname -I`. Das ist die IP-Adresse deiner VM (die erste Adresse, die mit
-   `192.168.` beginnt). **Schreib sie hier auf:** ____ . ____ . ____ . ____
+2. Finde die IP-Adresse deiner VM heraus: Tippe **in der VM** `hostname -I`.
+   Du musst sie nicht aufschreiben: Wenn du sie vergisst, schaust du einfach wieder mit
+   `hostname -I` in der VM oder mit `virsh … domifaddr` auf dem Laptop nach.
+   Kontrolliere sie danach im Terminal **deines Laptops** mit `virsh … domifaddr` (siehe
+   Tabelle, mit **deinem** VM-Namen). Es muss die gleiche Adresse herauskommen.
 3. Schreibe auf dem **Laptop** deinen Namen in die Datei `~/VM-Ergebnisse/aufgabe5_ssh.txt`.
-4. Verbinde dich im Terminal deines Laptops per SSH mit der VM. Tippe `hostname` und beende die
-   Verbindung mit `exit`.
+4. Verbinde dich im Terminal deines Laptops per SSH mit der VM. Setze **deinen** Benutzernamen
+   und **deine** IP-Adresse aus Auftrag 2 ein, z. B.:
+   ```
+   ssh anna@192.168.122.57
+   ```
+   Tippe in der VM `hostname` und beende die Verbindung mit `exit`.
 5. Hänge jetzt die Ergebnisse dieser **drei** Befehle **aus der VM** an deine Ergebnisdatei an
-   (SSH mit einem einzelnen Befehl, siehe Lesetext). **Tipp:** Mit `↑` holst du den letzten Befehl
-   zurück und musst nur den Befehl in der Mitte ändern.
+   (SSH mit einem einzelnen Befehl, siehe Lesetext). Der erste sieht so aus, mit **deinem**
+   Benutzernamen und **deiner** IP-Adresse:
    ```
-   hostname
-   free -h
-   groups
+   ssh anna@192.168.122.57 hostname >> ~/VM-Ergebnisse/aufgabe5_ssh.txt
    ```
+   Danach das Gleiche mit `free -h` und mit `groups` statt `hostname`. **Tipp:** Mit `↑` holst du
+   den letzten Befehl zurück und musst nur den Befehl in der Mitte ändern.
    `groups` zeigt, in welchen **Gruppen** dein Benutzer ist. Eine Gruppe ist eine Liste von
    Benutzern mit gleichen Rechten.
 6. Öffne die Datei mit nano und beantworte unten:
@@ -455,8 +482,8 @@ Mit **`curl`** holst du eine Webseite im Terminal ab statt im Browser.
 1. Verbinde dich per SSH mit deiner VM (so, dass du in der VM bleibst).
 2. Lade die Paketliste herunter und installiere das Paket `nginx`. Wenn `apt` fragt, ob du
    fortfahren möchtest, drückst du `Y` (für «yes») und Enter.
-3. Öffne auf dem Laptop den Firefox und tippe `http://` und die IP-Adresse deiner VM ein,
-   z. B. `http://192.168.122.57`. Es erscheint **Welcome to nginx!**
+3. Öffne auf dem Laptop den Firefox und tippe `http://` und die IP-Adresse deiner VM aus
+   Aufgabe 5 ein, z. B. `http://192.168.122.57`. Es erscheint **Welcome to nginx!**
 4. Erstelle in der VM deine eigene Startseite mit `sudo nano /var/www/html/index.html`.
    Tippe diesen Text ab und ersetze die Teile in Grossbuchstaben:
    ```
@@ -467,7 +494,8 @@ Mit **`curl`** holst du eine Webseite im Terminal ab statt im Browser.
    Die erste Zeile sorgt dafür, dass Umlaute wie ä, ö, ü richtig angezeigt werden.
    Speichern und nano verlassen. Lade die Seite im Firefox neu (`F5`).
 5. Beende die SSH-Verbindung. Schreibe auf dem **Laptop** deinen Namen in die Datei
-   `~/VM-Ergebnisse/aufgabe6_webserver.txt` und hänge die Webseite an (`-s` = «silent», still):
+   `~/VM-Ergebnisse/aufgabe6_webserver.txt` und hänge die Webseite an (`-s` = «silent», still;
+   mit **deiner** IP-Adresse):
    ```
    curl -s http://192.168.122.57 >> ~/VM-Ergebnisse/aufgabe6_webserver.txt
    ```

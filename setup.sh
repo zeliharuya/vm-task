@@ -80,7 +80,7 @@ fi
 # --- Neue Gruppe: alte VMs, ISOs, Ergebnisse und SSH-Schlüssel entfernen ---------
 if [[ $NEUE_GRUPPE -eq 1 ]]; then
     mapfile -t VMS < <(als_root virsh -c "$VERBINDUNG" list --all --name | grep -E '^vm-' || true)
-    ISOS=("$DOWNLOADS"/debian-*.iso "$DOWNLOADS"/SHA256SUMS*)
+    ISOS=("$DOWNLOADS"/debian-*.iso "$DOWNLOADS"/SHA256SUMS* "$DOWNLOADS"/SHA512SUMS*)
     vorhandene_isos=()
     for f in "${ISOS[@]}"; do [[ -e "$f" ]] && vorhandene_isos+=("$f"); done
 
