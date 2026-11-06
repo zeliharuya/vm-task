@@ -15,6 +15,7 @@ ist der Name der Aufgabe.
 |---|---|---|
 | `aufgabenblatt.md` | Schnupperlehrlinge | Lesetexte, Aufgaben 0–7 und zwei freiwillige Zusatzaufgaben |
 | `aufgabenblatt.pdf` | Schnupperlehrlinge | Das gleiche Aufgabenblatt zum Ausdrucken (A4, jede Aufgabe auf einer neuen Seite) |
+| `pdf_erstellen.py` | Betreuungsperson | Erstellt `aufgabenblatt.pdf` neu aus `aufgabenblatt.md` |
 | `setup.sh` | Betreuungsperson | Bereitet einen Laptop vor (Programme, Rechte, Netzwerk, Ergebnis-Ordner) |
 
 Weiteres Material für die Betreuungsperson liegt nur lokal im Ordner `betreuung/` (siehe
@@ -80,8 +81,12 @@ und die VMs nicht sieht.
 ## Aufgabenblatt als PDF
 
 `aufgabenblatt.pdf` ist fertig zum Ausdrucken. Wenn du `aufgabenblatt.md` änderst, musst du das PDF
-neu erstellen, z. B. so:
+neu erstellen. Dafür braucht es Google Chrome (oder Chromium) und das Python-Paket
+`markdown-it-py`:
 
 ```bash
-pandoc aufgabenblatt.md -o aufgabenblatt.pdf
+python3 -m venv /tmp/pdf-venv && /tmp/pdf-venv/bin/pip install markdown-it-py
+/tmp/pdf-venv/bin/python pdf_erstellen.py
 ```
+
+Danach das PDF kurz durchblättern: Jede Aufgabe beginnt auf einer neuen Seite.

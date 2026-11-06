@@ -128,13 +128,15 @@ lassen, statt viele Server zu kaufen. Fast alles aus der **Cloud** läuft in VMs
 
 Was die VM bekommt, fehlt dem Host, solange die VM läuft. Darum musst du wissen, wie viel dein
 Laptop hergeben kann. Ausserdem muss der Prozessor **Virtualisierung** unterstützen, sonst ist
-die VM sehr langsam. Intel nennt das **vmx**, AMD nennt es **svm**.
+die VM sehr langsam. Intel nennt das **VT-x**, AMD nennt es **AMD-V**. Kann der Prozessor das und
+ist es eingeschaltet, gibt es auf dem Laptop die Datei **`/dev/kvm`**. Über diese Datei
+benutzen Programme den Hypervisor KVM.
 
 | Befehl                                  | Was er zeigt                                                   |
 |-----------------------------------------|----------------------------------------------------------------|
 | `nproc`                                 | die Anzahl **Prozessor-Kerne**                                 |
 | `free -h`                               | den **Arbeitsspeicher** (RAM). Wichtig ist die Zeile `Speicher:` (bzw. `Mem:`) und die Spalte `gesamt` (bzw. `total`). |
-| `grep -c -E 'vmx\|svm' /proc/cpuinfo`   | zählt, wie oft `vmx` oder `svm` in der Beschreibung des Prozessors vorkommt. Eine Zahl **grösser als 0** heisst: Der Prozessor kann Virtualisierung. |
+| `ls -l /dev/kvm`                        | zeigt die Datei `/dev/kvm`, wenn es sie gibt. Gibt es sie **nicht**, erscheint `No such file or directory` (bzw. `Datei oder Verzeichnis nicht gefunden`). |
 
 Das `-h` bei `free` heisst «human» (= für Menschen lesbar). Statt riesigen Zahlen siehst du
 dann z. B. `15Gi`. `Gi` steht für Gibibyte, das ist fast das Gleiche wie Gigabyte (GB).
