@@ -280,7 +280,10 @@ deinen Laptop, so wie dein Handy zu Hause über den WLAN-Router. Diese Art von N
    - **Schritt 5 von 5:** Lösche den vorgeschlagenen Namen und trage **deinen** VM-Namen ein.
      Kontrolliere alle Angaben noch einmal mit der Tabelle und klicke dann auf **Fertig**.
 3. Ein neues Fenster öffnet sich: der **Bildschirm deiner VM** mit dem Startmenü von Debian.
-   **Klicke noch nichts an!** Mach zuerst die Aufträge 4 und 5.
+   **Sofort** in das Fenster klicken und **Enter** drücken (**Graphical install** ist schon
+   ausgewählt). Das Startmenü wartet nämlich nicht lange und startet sonst von selbst etwas
+   anderes. Danach erscheint **Select a language**. Dieser Bildschirm wartet, so lange du willst.
+   **Klicke dort noch nichts an!** Mach zuerst die Aufträge 4 und 5.
 4. Schreibe deinen Namen in die Datei `~/VM-Ergebnisse/aufgabe3_vm_erstellen.txt` und hänge die
    Informationen über deine VM an (mit **deinem** VM-Namen am Schluss):
    ```
@@ -333,7 +336,7 @@ Klicke in das Fenster deiner VM. Arbeite die Tabelle **Zeile für Zeile** ab. Mi
 
 | Nr. | Frage / Bildschirm (englisch)                          | Deine Antwort                                         |
 |-----|--------------------------------------------------------|-------------------------------------------------------|
-| 1   | Debian GNU/Linux installer menu                        | **Graphical install**, mit Enter starten              |
+| 1   | Debian GNU/Linux installer menu                        | schon erledigt (Aufgabe 3, Auftrag 3)                 |
 | 2   | Select a language                                      | **English**                                           |
 | 3   | Select your location                                   | **other**, danach **Europe**, danach **Switzerland**  |
 | 4   | Configure locales                                      | **United States – en_US.UTF-8**                       |
