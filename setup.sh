@@ -9,21 +9,31 @@
 #   bash setup.sh                -> Programme installieren, Ergebnis-Ordner anlegen, Ergebnisse bleiben
 #   bash setup.sh --neue-gruppe  -> zusätzlich: Ergebnisse, VMs «vm-*», heruntergeladene Debian-ISOs
 #                                   und SSH-Schlüssel der VMs löschen (fragt vorher nach)
+#
+# Hat der Benutzer der Schnupperlehrlinge keine sudo-Rechte, als root ausführen und den Benutzer
+# angeben (geht auch zusammen mit --neue-gruppe):
+#   bash setup.sh --benutzer NAME
 set -euo pipefail
 
 # Pfad merken, bevor das Skript den Ordner wechselt (für das Selbstlöschen am Schluss).
 SKRIPT="${BASH_SOURCE[0]:-}"
 [[ -f "$SKRIPT" ]] && SKRIPT="$(realpath "$SKRIPT")"
 
-ERGEBNISSE="$HOME/VM-Ergebnisse"
-# xdg-user-dir gibt $HOME zurück, wenn kein Download-Ordner eingetragen ist.
-DOWNLOADS="$(xdg-user-dir DOWNLOAD 2>/dev/null || true)"
-[[ -z "$DOWNLOADS" || "$DOWNLOADS" == "$HOME" ]] && DOWNLOADS="$HOME/Downloads"
 VERBINDUNG="qemu:///system"
 PAKETE=(virt-manager libvirt-daemon-system libvirt-clients qemu-system-x86 qemu-utils
         dnsmasq-base nano curl wget openssh-client)
 NEUE_GRUPPE=0
-[[ "${1:-}" == "--neue-gruppe" ]] && NEUE_GRUPPE=1
+ZIEL_BENUTZER=""
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --neue-gruppe) NEUE_GRUPPE=1 ;;
+        --benutzer)
+            [[ -n "${2:-}" ]] || { echo "Nach --benutzer fehlt der Benutzername."; exit 1; }
+            ZIEL_BENUTZER="$2"; shift ;;
+        *) echo "Unbekannte Angabe: $1 (erlaubt: --neue-gruppe, --benutzer NAME)"; exit 1 ;;
+    esac
+    shift
+done
 
 WARNUNGEN=()
 warnung() { WARNUNGEN+=("$1"); }
@@ -40,11 +50,43 @@ if [[ $EUID -ne 0 ]] && ! command -v sudo >/dev/null; then
     echo "sudo fehlt. Bitte als root «apt-get install sudo» ausführen und den Benutzer in die Gruppe sudo aufnehmen."
     exit 1
 fi
-BENUTZER="$(id -un)"
 if [[ $EUID -eq 0 ]]; then
-    echo "Bitte nicht als root ausführen, sondern als der Benutzer, mit dem die Schnupperlehrlinge arbeiten."
-    exit 1
+    if [[ -z "$ZIEL_BENUTZER" ]]; then
+        echo "Als root bitte angeben, mit welchem Benutzer die Schnupperlehrlinge arbeiten:"
+        echo "  bash setup.sh --benutzer NAME"
+        exit 1
+    fi
+    if ! getent passwd "$ZIEL_BENUTZER" >/dev/null; then
+        echo "Den Benutzer «$ZIEL_BENUTZER» gibt es nicht."
+        exit 1
+    fi
+    if [[ "$(id -u "$ZIEL_BENUTZER")" -eq 0 ]]; then
+        echo "Der Benutzer für die Schnupperlehrlinge darf nicht root sein."
+        exit 1
+    fi
+    BENUTZER="$ZIEL_BENUTZER"
+else
+    BENUTZER="$(id -un)"
+    if [[ -n "$ZIEL_BENUTZER" && "$ZIEL_BENUTZER" != "$BENUTZER" ]]; then
+        echo "--benutzer geht nur als root. Sonst als «$ZIEL_BENUTZER» anmelden und ohne --benutzer ausführen."
+        exit 1
+    fi
 fi
+BENUTZER_HOME="$(getent passwd "$BENUTZER" | cut -d: -f6)"
+
+# Befehle für Dateien im Home-Ordner laufen immer als der Benutzer, damit sie ihm gehören.
+als_benutzer() {
+    if [[ $EUID -eq 0 ]]; then
+        runuser -u "$BENUTZER" -- env HOME="$BENUTZER_HOME" "$@"
+    else
+        "$@"
+    fi
+}
+
+ERGEBNISSE="$BENUTZER_HOME/VM-Ergebnisse"
+# xdg-user-dir gibt $HOME zurück, wenn kein Download-Ordner eingetragen ist.
+DOWNLOADS="$(als_benutzer xdg-user-dir DOWNLOAD 2>/dev/null || true)"
+[[ -z "$DOWNLOADS" || "$DOWNLOADS" == "$BENUTZER_HOME" ]] && DOWNLOADS="$BENUTZER_HOME/Downloads"
 
 # --- Programme -----------------------------------------------------------------
 fehlend=()
@@ -115,16 +157,16 @@ if [[ $NEUE_GRUPPE -eq 1 ]]; then
     done
     rm -f -- "${vorhandene_isos[@]}"
     rm -rf -- "$ERGEBNISSE"
-    if [[ -f "$HOME/.ssh/known_hosts" ]]; then
+    if [[ -f "$BENUTZER_HOME/.ssh/known_hosts" ]]; then
         for i in $(seq 2 254); do
-            ssh-keygen -R "192.168.122.$i" >/dev/null 2>&1 || true
+            als_benutzer ssh-keygen -R "192.168.122.$i" -f "$BENUTZER_HOME/.ssh/known_hosts" >/dev/null 2>&1 || true
         done
-        rm -f "$HOME/.ssh/known_hosts.old"
+        rm -f "$BENUTZER_HOME/.ssh/known_hosts.old"
     fi
 fi
 
 # --- Ergebnis-Ordner -------------------------------------------------------------
-mkdir -p "$ERGEBNISSE"
+als_benutzer mkdir -p "$ERGEBNISSE"
 
 # --- Prüfungen ------------------------------------------------------------------
 if [[ ! -e /dev/kvm ]]; then
@@ -138,7 +180,7 @@ frei_gib=$(df -BG --output=avail /var/lib/libvirt/images 2>/dev/null | tail -1 |
 if [[ -n "$frei_gib" ]] && (( frei_gib < 25 )); then
     warnung "In /var/lib/libvirt/images sind nur ${frei_gib} GiB frei. Die VM braucht bis zu 20 GiB (empfohlen: 25 GiB frei)."
 fi
-mkdir -p "$DOWNLOADS"
+als_benutzer mkdir -p "$DOWNLOADS"
 frei_dl=$(df -BG --output=avail "$DOWNLOADS" | tail -1 | tr -dc '0-9')
 if (( frei_dl < 2 )); then
     warnung "In $DOWNLOADS sind nur ${frei_dl} GiB frei. Die ISO-Datei braucht ca. 1 GiB."
@@ -175,7 +217,7 @@ fi
 # Beim Starten mit «bash <(curl …)» gibt es keine Datei, dann ist nichts zu tun.
 # Ausnahme: im Git-Repository der Betreuungsperson, damit das Original erhalten bleibt.
 if [[ -f "$SKRIPT" ]]; then
-    if ! git -C "$(dirname "$SKRIPT")" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    if ! git -c safe.directory="*" -C "$(dirname "$SKRIPT")" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
         rm -f -- "$SKRIPT"
     fi
 fi

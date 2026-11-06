@@ -27,7 +27,7 @@ Repository hochgeladen.
 - Prozessor mit **Virtualisierung** (Intel VT-x / AMD-V), im BIOS/UEFI eingeschaltet
 - mindestens **8 GB Arbeitsspeicher** (die VM bekommt 2 GiB)
 - mindestens **25 GB frei** unter `/var/lib/libvirt/images`
-- ein Benutzer mit `sudo`-Rechten zum Vorbereiten
+- zum Vorbereiten: `sudo`-Rechte für den Benutzer der Schnupperlehrlinge **oder** das root-Passwort
 
 ## Vorbereitung
 
@@ -37,6 +37,11 @@ Schnupperlehrlinge arbeiten, öffne ein Terminal und führe diesen Befehl aus:
 ```bash
 bash <(curl -fsSL https://raw.githubusercontent.com/zeliharuya/vm-task/main/setup.sh || wget -qO- https://raw.githubusercontent.com/zeliharuya/vm-task/main/setup.sh)
 ```
+
+**Ohne sudo-Rechte:** Hat der Benutzer der Schnupperlehrlinge (z. B. `bewerber`) keine
+sudo-Rechte, wechselst du im Terminal mit `su -` zu root und hängst `--benutzer bewerber` an den
+Befehl an (nach der letzten Klammer, auch zusammen mit `--neue-gruppe`). Der Ergebnis-Ordner und
+alles andere werden dann trotzdem für `bewerber` eingerichtet und gehören diesem Benutzer.
 
 Der Befehl lädt `setup.sh` herunter und führt es direkt aus. Es bleibt keine Datei auf dem Laptop
 zurück. Das Skript fragt nach dem sudo-Passwort und
