@@ -186,12 +186,12 @@ hat sie unterwegs verändert und ein Schadprogramm eingebaut. Deshalb veröffent
 jeder ISO-Datei eine **Prüfsumme**. Eine Prüfsumme ist wie ein **Fingerabdruck** einer Datei: eine
 lange Zeichenkette, die aus dem ganzen Inhalt berechnet wird. Ändert sich in der Datei auch nur
 **ein einziges Zeichen**, kommt ein **komplett anderer** Fingerabdruck heraus. Debian benutzt dafür
-das Verfahren **SHA-512**.
+das Verfahren **SHA-512**. Du berechnest die Prüfsumme deiner Datei und vergleichst sie mit der
+Prüfsumme, die auf der Webseite von Debian steht. Sind beide **gleich**, ist die Datei in Ordnung.
 
 | Befehl                         | Was er macht                                                          |
 |--------------------------------|-----------------------------------------------------------------------|
 | `sha512sum datei`              | berechnet die Prüfsumme der Datei.                                    |
-| `sha512sum -c SHA512SUMS`      | liest die Liste `SHA512SUMS` mit den richtigen Prüfsummen und vergleicht sie mit den Dateien («c» für «check» = prüfen). Stimmt sie, steht `OK` hinter dem Dateinamen, sonst `FEHLSCHLAG` (bzw. `FAILED`). |
 | `ls -lh datei`                 | zeigt Informationen über die Datei an, unter anderem ihre **Grösse**. |
 
 ### Aufträge
@@ -215,29 +215,30 @@ das Verfahren **SHA-512**.
    echo Hallo | sha512sum
    echo hallo | sha512sum
    ```
-4. **Die Prüfsummen holen:** Auf der Download-Seite steht unter dem Namen der ISO-Datei
-   «Download checksum: **SHA512SUMS**». Klicke mit der **rechten** Maustaste auf `SHA512SUMS` und
-   wähle **Link-Adresse kopieren**. Wechsle im Terminal in den Ordner `~/Downloads`, tippe
-   `wget ` (mit Leerzeichen danach), füge die Adresse mit `Ctrl` + `Shift` + `V` ein und drücke
-   Enter. `wget` lädt die Datei, deren Adresse du angibst, in den aktuellen Ordner.
-5. Wenn der Download der ISO-Datei fertig ist: Hänge Informationen über die ISO-Datei an. Der Stern `*` steht für «beliebige Zeichen», so
-   musst du die Versionsnummer nicht abtippen:
+4. Wenn der Download der ISO-Datei fertig ist: Wechsle im Terminal mit `cd ~/Downloads` in den
+   Ordner `Downloads`. Hänge Informationen über die ISO-Datei an. Der Stern `*` steht für
+   «beliebige Zeichen», so musst du die Versionsnummer nicht abtippen:
    ```
    ls -lh debian-*-amd64-netinst.iso >> ~/VM-Ergebnisse/aufgabe2_iso.txt
    ```
-6. Prüfe die ISO-Datei und hänge das Ergebnis an. Die Liste enthält die Prüfsummen von mehreren
-   ISO-Dateien, du hast aber nur **eine**. Mit `--ignore-missing` («fehlende ignorieren») meckert
-   `sha512sum` nicht über die anderen:
+5. Berechne die Prüfsumme der ISO-Datei und hänge sie an (das dauert ein paar Sekunden):
    ```
-   sha512sum -c --ignore-missing SHA512SUMS >> ~/VM-Ergebnisse/aufgabe2_iso.txt
+   sha512sum debian-*-amd64-netinst.iso >> ~/VM-Ergebnisse/aufgabe2_iso.txt
    ```
-   Kontrolliere mit `cat`, ob hinter dem Namen der ISO-Datei `OK` steht. Wenn nicht:
+   Schau dir die Prüfsumme mit `cat ~/VM-Ergebnisse/aufgabe2_iso.txt` an.
+6. **Vergleichen:** Auf der Download-Seite steht unter dem Namen der ISO-Datei
+   «Download checksum: **SHA512SUMS**». Klicke auf `SHA512SUMS`. Firefox zeigt eine kurze Liste:
+   Jede Zeile ist eine Prüfsumme und dahinter der Name einer ISO-Datei. Suche die Zeile mit
+   **deiner** ISO-Datei und vergleiche sie mit deiner Prüfsumme im Terminal. Es reicht, die
+   **ersten 10** und die **letzten 10** Zeichen zu vergleichen. Sind sie nicht gleich:
    Betreuungsperson fragen.
 7. Öffne die Ergebnisdatei mit nano und beantworte unten:
    - a) Was ist dir bei `Hallo` und `hallo` aufgefallen? Was sagt dir das über Prüfsummen?
    - b) Wie gross ist die ISO-Datei?
-   - c) Was hättest du gemacht, wenn `FEHLSCHLAG` gestanden hätte? Warum?
-   - d) Warum lädt man Debian von www.debian.org herunter und nicht von einem Download-Portal?
+   - c) Ist deine Prüfsumme gleich wie die auf der Webseite? Schreibe die **ersten 10 Zeichen**
+     der Prüfsumme auf der Webseite ab.
+   - d) Was hättest du gemacht, wenn die Prüfsummen **nicht** gleich gewesen wären? Warum?
+   - e) Warum lädt man Debian von www.debian.org herunter und nicht von einem Download-Portal?
 
 ---
 
